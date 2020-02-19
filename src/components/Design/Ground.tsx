@@ -40,9 +40,6 @@ const bg = `
 
 export const Ground = styled.div`
   background: ${grass}, ${dots}, ${bg};
-  height: 20vh;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  position: absolute;
+  width: 100%;
+  height: 100%;
 `;
