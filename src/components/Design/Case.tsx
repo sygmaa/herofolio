@@ -15,6 +15,14 @@ const Position = styled.div`
   transition: bottom 0.2s ease;
 `;
 
+const Text = styled.div`
+  position: absolute;
+  margin-top: -2.2rem;
+  color: #b42e25;
+  text-shadow: 0px 1px 0px #fff;
+  font-size: 2rem;
+`;
+
 export interface CaseProps {
   children: ReactNode;
 }
@@ -22,7 +30,7 @@ export interface CaseProps {
 const Case = ({ children }: CaseProps) => {
   return (
     <Position>
-      <div>{children}</div>
+      <Text>{children}</Text>
       <CaseSquare></CaseSquare>
     </Position>
   );

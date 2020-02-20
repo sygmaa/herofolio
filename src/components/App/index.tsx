@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import useInterval from "use-interval";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faQuestionCircle } from "@fortawesome/free-regular-svg-icons";
 
 import useKeyPress from "../../hooks/useKeyPress";
 import { Ground } from "../Design/Ground";
@@ -9,53 +7,54 @@ import { Hero } from "../Design/Hero";
 import { Sun } from "../Design/Sun";
 import { GlobalStyle } from "../Design/GlobalStyles";
 import { HighlightedText } from "../Design/HighlightedText";
-import { Info } from "../Design/Info";
+import About from "../About";
 import Case from "../Design/Case";
 import Grid from "../Grid";
 import GridElement from "../Grid/GridElement";
 
 const GRID_WIDTH = 16;
-const GRID_HEIGHT = 16;
-const GROUND_HEIGHT = 3;
-const HERO_SIZE = 3;
+const GRID_HEIGHT = 10;
+const GROUND_HEIGHT = 2;
+const HERO_SIZE = 1;
 const STEP = 1;
-const JUMP = 2;
+const JUMP = 3;
+const SKILLS_LEFT = 8;
 
 const App = () => {
-  const [heorLeft, setHeroLeft] = useState(1);
-  const [heroBottom, setHeroBottom] = useState(3);
+  const [heroLeft, setHeroLeft] = useState(1);
+  const [heroBottom, setHeroBottom] = useState(GROUND_HEIGHT);
   const [isWalking, setIsWalking] = useState(false);
   const [canJump, setCanJump] = useState(true);
-  const [skillsBottom, setSkillsBottom] = useState(6);
+  const [skillsBottom, setSkillsBottom] = useState(GROUND_HEIGHT + JUMP);
 
   const left = useKeyPress("ArrowLeft");
   const right = useKeyPress("ArrowRight");
   const space = useKeyPress(" ");
 
   const rightHandler = () =>
-    right && heorLeft < GRID_WIDTH - STEP && setHeroLeft(heorLeft + STEP);
+    right && heroLeft < GRID_WIDTH - STEP && setHeroLeft(heroLeft + STEP);
 
   const leftHandler = () =>
-    left && heorLeft > STEP && setHeroLeft(heorLeft - STEP);
+    left && heroLeft > STEP && setHeroLeft(heroLeft - STEP);
 
   const onSkillsCollision = () => {
     setTimeout(() => {
-      setSkillsBottom(GROUND_HEIGHT + HERO_SIZE + JUMP);
+      setSkillsBottom(GROUND_HEIGHT + JUMP + 1);
     }, 150);
 
     setTimeout(() => {
-      setSkillsBottom(GROUND_HEIGHT + HERO_SIZE);
+      setSkillsBottom(GROUND_HEIGHT + JUMP);
     }, 300);
   };
 
-  const onSpaceTyping = () => {
+  const onJumping = () => {
     if (space && canJump) {
-      setHeroBottom(GROUND_HEIGHT + HERO_SIZE);
+      setHeroBottom(GROUND_HEIGHT + JUMP);
       setCanJump(false);
       setTimeout(() => setHeroBottom(GROUND_HEIGHT), 200);
       setTimeout(() => setCanJump(true), 400);
 
-      if (heorLeft === 5) {
+      if (heroLeft === SKILLS_LEFT) {
         onSkillsCollision();
       }
     }
@@ -77,7 +76,7 @@ const App = () => {
 
   useInterval(arrowsListener, 200, true);
 
-  useEffect(onSpaceTyping, [space]);
+  useEffect(onJumping, [space]);
 
   return (
     <>
@@ -87,10 +86,7 @@ const App = () => {
         Hello, I'm Kévin Dumont, passionate web developer
       </HighlightedText>
 
-      <Info>
-        <FontAwesomeIcon icon={faQuestionCircle} size={"lg"} />
-        <p>About</p>
-      </Info>
+      <About />
 
       {/* Game elements */}
       <Grid
@@ -103,14 +99,19 @@ const App = () => {
           <Sun />
         </GridElement>
 
-        <GridElement id="skills" left={5} bottom={skillsBottom}>
+        <GridElement
+          id="skills"
+          left={SKILLS_LEFT}
+          bottom={skillsBottom}
+          transition={"all 0.3s ease"}
+        >
           <Case>Skills</Case>
         </GridElement>
 
         <GridElement
           id="hero"
           bottom={heroBottom}
-          left={heorLeft}
+          left={heroLeft}
           height={HERO_SIZE}
           transition={"all 0.3s linear"}
         >
