@@ -1,0 +1,26 @@
+import React from "react";
+
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Profile from "./containers/Profile";
+import About from "./components/About";
+import GlobalStyles from "./components/Design/GlobalStyles";
+
+const App = () => {
+  return (
+    <Router>
+      <GlobalStyles />
+      <About />
+
+      <Switch>
+        <Route path="/" exact>
+          <Profile />
+        </Route>
+        <Route path="/skills" exact>
+          yo
+        </Route>
+      </Switch>
+    </Router>
+  );
+};
+
+export default App;

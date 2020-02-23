@@ -6,6 +6,7 @@ interface BaseGridElementProps {
   width?: number;
   height?: number;
   transition?: string;
+  zIndex?: number;
 }
 
 interface GridElementLeftProps extends BaseGridElementProps {

@@ -10,7 +10,6 @@ export const CaseSquare = styled(BrickBg)`
 `;
 
 const Position = styled.div`
-  font-family: "VT323", monospace;
   text-align: center;
   transition: bottom 0.2s ease;
 `;
@@ -20,16 +19,19 @@ const Text = styled.div`
   margin-top: -2.2rem;
   color: #b42e25;
   text-shadow: 0px 1px 0px #fff;
-  font-size: 2rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-left: -0.3rem;
 `;
 
 export interface CaseProps {
   children: ReactNode;
+  onClick: () => any;
 }
 
-const Case = ({ children }: CaseProps) => {
+const Case = ({ children, onClick }: CaseProps) => {
   return (
-    <Position>
+    <Position onClick={onClick}>
       <Text>{children}</Text>
       <CaseSquare></CaseSquare>
     </Position>

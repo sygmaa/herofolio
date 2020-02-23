@@ -23,23 +23,23 @@ const dotsValues = [
 
 const dots = dotsValues
   .map(v => {
-    return `radial-gradient(4px 4px at ${v.left}% ${v.top}%, #8c6b26 46%, transparent 50%) repeat-x`;
+    return `radial-gradient(4px 4px at ${v.left}% ${v.top}%, rgba(0,0,0,0.2) 46%, transparent 50%) repeat-x`;
   })
   .join(",");
 
-const grass = `
-  linear-gradient(20deg, transparent 82%, #21b121 83%) 0 0 / 20px repeat-x,
-  linear-gradient(-20deg, transparent 82%, #21b121 83%) 0 0 / 20px repeat-x
+const grass = (color: string) => `
+  linear-gradient(30deg, transparent 72%, ${color} 73%) 0 0 / 20px repeat-x,
+  linear-gradient(-30deg, transparent 72%, ${color} 73%) 0 0 / 20px repeat-x
 `;
 
-const bg = `
-  linear-gradient(to bottom, #74470e 0%, #281b00 100%);
-`;
+export interface GroundProps {
+  grassColor: string;
+  groundColor: string;
+}
 
-// #74470e
-
-export const Ground = styled.div`
-  background: ${grass}, ${dots}, ${bg};
+export const Ground = styled.div<GroundProps>`
+  background: ${({ grassColor, groundColor }) =>
+    `${grass(grassColor)}, ${dots}, ${groundColor}`};
   width: 100%;
   height: 100%;
 `;

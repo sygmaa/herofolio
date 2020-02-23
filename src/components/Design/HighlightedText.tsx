@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { MEDIA } from "../../constants";
 
 const textBg = `
-linear-gradient(1deg, white 30%, transparent 31%, transparent 49%, white 50%, white 75%, transparent 76%) 4px 0 / 90% repeat-y
+  linear-gradient(1deg, #fff 30%, transparent 31%, transparent 49%, #fff 50%, #fff 75%, transparent 76%) 4px 0 / 90% repeat-y
 `;
 
 export const HighlightedText = styled.div`

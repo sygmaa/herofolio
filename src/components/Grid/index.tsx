@@ -9,6 +9,7 @@ export interface GridProps {
   nbLines: number;
   width: string;
   height: string;
+  [k: string]: any;
 }
 
 const GridStyle = styled.div<{ width: string; height: string }>`
@@ -26,13 +27,14 @@ const Grid = ({
   nbColumns,
   nbLines,
   width,
-  height
+  height,
+  ...props
 }: GridProps) => {
   const columnSize = `calc(${width} / ${nbColumns})`;
   const lineSize = `calc(${height} / ${nbLines})`;
 
   return (
-    <GridStyle width={width} height={height}>
+    <GridStyle width={width} height={height} {...props}>
       {gridElements.map(({ props: { children, id, ...others } }) => (
         <InternalGridElement
           key={id}

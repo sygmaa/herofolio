@@ -16,12 +16,19 @@ interface GridElementStyleProps {
   left?: string;
   right?: string;
   transition?: string;
+  zIndex?: number;
 }
 
 const GridElementStyle = styled.div<GridElementStyleProps>`
   position: absolute;
   display: flex;
   justify-content: center;
+
+  ${({ zIndex }) =>
+    zIndex !== undefined &&
+    css`
+      z-index: ${zIndex};
+    `};
 
   ${({ gridWidth, gridHeight }) => css`
     width: ${gridWidth};
@@ -66,12 +73,14 @@ const InternalGridElement = ({
   columnSize,
   lineSize,
   transition,
+  zIndex,
   ...props
 }: InternalGridElement) => {
   const { left, right, bottom, top } = props as any;
 
   return (
     <GridElementStyle
+      zIndex={zIndex}
       gridWidth={`calc(${columnSize} * ${width || 1})`}
       gridHeight={`calc(${lineSize} * ${height || 1})`}
       top={top !== undefined ? `calc(${lineSize} * ${top})` : undefined}
