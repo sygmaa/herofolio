@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+import { Close } from "../Design/Icons/Close";
+
 export const Overlay = styled.div`
   position: fixed;
   background: rgba(0, 0, 0, 0.2);
@@ -31,7 +33,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   max-height: calc(100% - 1.4rem);
-  max-width: 600px;
+  max-width: 700px;
   overflow: hidden;
   position: relative;
   width: calc(100% - 1.4rem);
@@ -49,4 +51,11 @@ export const Container = styled.div`
 export const Content = styled.div`
   background: #fff;
   overflow-y: auto;
+`;
+
+export const CloseUi = styled(Close)`
+  position: fixed;
+  top: 20px;
+  right: 10px;
+  cursor: pointer;
 `;

@@ -12,6 +12,7 @@ export const CaseSquare = styled(BrickBg)`
 const Position = styled.div`
   text-align: center;
   transition: bottom 0.2s ease;
+  cursor: pointer;
 `;
 
 const Text = styled.div`

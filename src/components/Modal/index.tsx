@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Overlay, Container, Content } from "./styles";
+
+import { Overlay, Container, Content, CloseUi } from "./styles";
 
 export interface ModalProps {
   children: ReactNode;
@@ -14,6 +15,14 @@ const Modal = ({ children, onClose, ...props }: ModalProps) => {
   const el = document.createElement("div");
   const popinRef = useRef(null);
 
+  const handleClose = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const div = event.target as HTMLDivElement;
+
+    if (onClose && popinRef.current && div.contains(popinRef.current)) {
+      onClose();
+    }
+  };
+
   useEffect(() => {
     modalRoot.appendChild(el);
 
@@ -23,7 +32,8 @@ const Modal = ({ children, onClose, ...props }: ModalProps) => {
   }, []);
 
   return createPortal(
-    <Overlay onClick={onClose}>
+    <Overlay onClick={handleClose}>
+      <CloseUi color={"#fff"} size={4} aria-label="close" onClick={onClose} />
       <Container ref={popinRef} {...props}>
         <Content>{children}</Content>
       </Container>

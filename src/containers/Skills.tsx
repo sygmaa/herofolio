@@ -13,36 +13,6 @@ import { Mountains } from "../components/Design/Moutains";
 import { Cloud } from "../components/Design/Cloud";
 import Modal from "../components/Modal";
 
-import Avatar from "../assets/img/avatar.jpg";
-import styled from "styled-components";
-import { MEDIA } from "../constants";
-import Castle from "../components/Design/Castle";
-
-const ModalContent = styled.div`
-  display: flex;
-  max-height: 377px;
-
-  img {
-    ${MEDIA.MAX_S} {
-      display: none;
-    }
-  }
-`;
-
-const ModalRight = styled.div`
-  padding: 20px;
-  overflow: auto;
-
-  h2 {
-    margin-top: 0;
-    font-size: 2rem;
-  }
-
-  p {
-    line-height: 2.6rem;
-  }
-`;
-
 const GRID_WIDTH = 16;
 const GRID_HEIGHT = 10;
 const GROUND_HEIGHT = 1;
@@ -76,12 +46,8 @@ const Profile = () => {
 
     setTimeout(() => {
       setSkillsBottom(GROUND_HEIGHT + JUMP);
-    }, 300);
-
-    setTimeout(() => {
       setShowPopin(true);
-      setIsWalking(false);
-    }, 400);
+    }, 300);
   };
 
   const onJumping = () => {
@@ -125,23 +91,24 @@ const Profile = () => {
 
       {showPopin && (
         <Modal onClose={() => setShowPopin(false)}>
-          <ModalContent>
-            <img src={Avatar} alt="test" />
-            <ModalRight>
-              <h2>
-                I'm <strong>Kévin Dumont</strong>, a web artisan
-              </h2>
-              <p style={{ fontFamily: '"Montserrat", sans-serif' }}>
-                I'm creative. I create websites in their entirety. Design,
-                development, deployment. So, we can say I'm a full stack
-                developer. I love challenges. I'm a real passionate. I'm 100%
-                self-taught, I'm interested by the back-end web development
-                since I was 14. Today, I prefer the front-end development
-                because it's more sophisticated. I am still learning new
-                technologies to stay up to date and improve my knowledge.
-              </p>
-            </ModalRight>
-          </ModalContent>
+          <div
+            style={{
+              padding: 20
+            }}
+          >
+            <h2>
+              I'm <strong>Kévin Dumont</strong>, a web artisan
+            </h2>
+            <p style={{ fontFamily: '"Montserrat", sans-serif' }}>
+              I'm creative. I create websites in their entirety. Design,
+              development, deployment. So, we can say I'm a full stack
+              developer. I love challenges. I'm a real passionate. I'm 100%
+              self-taught, I'm interested by the back-end web development since
+              I was 14. Today, I prefer the front-end development because it's
+              more sophisticated. I am still learning new technologies to stay
+              up to date and improve my knowledge.
+            </p>
+          </div>
         </Modal>
       )}
 
@@ -248,17 +215,6 @@ const Profile = () => {
             mountainHeight={30}
             background="#a5ccd0"
           />
-        </GridElement>
-
-        <GridElement
-          id="castle"
-          right={0}
-          height={5}
-          zIndex={2}
-          bottom={GROUND_HEIGHT}
-          width={2}
-        >
-          <Castle />
         </GridElement>
 
         <GridElement

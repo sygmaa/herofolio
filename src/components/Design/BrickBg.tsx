@@ -11,7 +11,7 @@ const wall = (color1?: string, color2?: string, color3?: string) => {
     linear-gradient(45deg, ${c3} 0%, ${c3} 25%, transparent 25%, transparent 75%, ${c2} 75%, ${c2} 100%) 28px 15px / 30px 30px,
     linear-gradient(45deg, ${c2} 0%, ${c2} 25%, transparent 25%, transparent 75%, ${c3} 75%, ${c3} 100%) 0 0 / 30px 30px,
     linear-gradient(45deg, ${c3} 0%, ${c3} 25%, transparent 25%, transparent 75%, ${c2} 75%, ${c2} 100%) 15px 15px / 30px 30px,
-    linear-gradient(to bottom, white, white)
+    ${c1}
   `;
 };
 
