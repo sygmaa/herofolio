@@ -2,6 +2,7 @@ import React from "react";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Profile from "./containers/Profile";
+import Skills from "./containers/Skills";
 import About from "./components/About";
 import GlobalStyles from "./components/Design/GlobalStyles";
 
@@ -16,7 +17,7 @@ const App = () => {
           <Profile />
         </Route>
         <Route path="/skills" exact>
-          yo
+          <Skills />
         </Route>
       </Switch>
     </Router>

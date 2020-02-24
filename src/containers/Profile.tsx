@@ -17,6 +17,7 @@ import Avatar from "../assets/img/avatar.jpg";
 import styled from "styled-components";
 import { MEDIA } from "../constants";
 import Castle from "../components/Design/Castle";
+import { useHistory } from "react-router-dom";
 
 const ModalContent = styled.div`
   display: flex;
@@ -58,6 +59,8 @@ const Profile = () => {
   const [canJump, setCanJump] = useState(true);
   const [skillsBottom, setSkillsBottom] = useState(GROUND_HEIGHT + JUMP);
   const [showPopin, setShowPopin] = useState(false);
+
+  const history = useHistory();
 
   const left = useKeyPress("ArrowLeft");
   const right = useKeyPress("ArrowRight");
@@ -110,6 +113,12 @@ const Profile = () => {
       rightHandler();
       leftHandler();
       handleHeroWalking();
+
+      if (heroLeft === GRID_WIDTH - 1) {
+        setTimeout(() => {
+          history.push("/skills");
+        }, 200);
+      }
     }
   };
 

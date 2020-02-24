@@ -12,6 +12,7 @@ import GridElement from "../components/Grid/GridElement";
 import { Mountains } from "../components/Design/Moutains";
 import { Cloud } from "../components/Design/Cloud";
 import Modal from "../components/Modal";
+import { BrickBg } from "../components/Design/BrickBg";
 
 const GRID_WIDTH = 16;
 const GRID_HEIGHT = 10;
@@ -21,7 +22,7 @@ const STEP = 1;
 const JUMP = 3;
 const SKILLS_LEFT = 8;
 
-const Profile = () => {
+const Skills = () => {
   const [heroLeft, setHeroLeft] = useState(1);
   const [heroBottom, setHeroBottom] = useState(GROUND_HEIGHT);
   const [isWalking, setIsWalking] = useState(false);
@@ -85,10 +86,6 @@ const Profile = () => {
 
   return (
     <>
-      <HighlightedText>
-        Hello, I'm Kévin Dumont, passionate web developer
-      </HighlightedText>
-
       {showPopin && (
         <Modal onClose={() => setShowPopin(false)}>
           <div
@@ -96,18 +93,7 @@ const Profile = () => {
               padding: 20
             }}
           >
-            <h2>
-              I'm <strong>Kévin Dumont</strong>, a web artisan
-            </h2>
-            <p style={{ fontFamily: '"Montserrat", sans-serif' }}>
-              I'm creative. I create websites in their entirety. Design,
-              development, deployment. So, we can say I'm a full stack
-              developer. I love challenges. I'm a real passionate. I'm 100%
-              self-taught, I'm interested by the back-end web development since
-              I was 14. Today, I prefer the front-end development because it's
-              more sophisticated. I am still learning new technologies to stay
-              up to date and improve my knowledge.
-            </p>
+            <p style={{ fontFamily: '"Montserrat", sans-serif' }}>Todo</p>
           </div>
         </Modal>
       )}
@@ -118,47 +104,7 @@ const Profile = () => {
         height="100vh"
         nbColumns={GRID_WIDTH}
         nbLines={GRID_HEIGHT}
-        style={{
-          backgroundImage: "linear-gradient(170deg,#c3efff 0%,#cdfaff 95%)"
-        }}
       >
-        <GridElement
-          id="cloud1"
-          top={2}
-          right={0}
-          width={3}
-          height={2}
-          zIndex={0}
-        >
-          <Cloud color="#fff" />
-        </GridElement>
-
-        <GridElement
-          id="cloud2"
-          top={3}
-          left={2}
-          width={3}
-          height={2}
-          zIndex={0}
-        >
-          <Cloud color="#fff" />
-        </GridElement>
-
-        <GridElement
-          id="cloud3"
-          top={1}
-          left={7}
-          width={3}
-          height={2}
-          zIndex={0}
-        >
-          <Cloud color="#fff" />
-        </GridElement>
-
-        <GridElement id="sun" left={3} bottom={1} width={3} height={3}>
-          <Sun />
-        </GridElement>
-
         <GridElement
           id="skills"
           left={SKILLS_LEFT}
@@ -166,7 +112,7 @@ const Profile = () => {
           zIndex={3}
           transition={"all 0.3s ease"}
         >
-          <Case onClick={() => setShowPopin(true)}>Profile</Case>
+          <Case onClick={() => setShowPopin(true)}>Skills</Case>
         </GridElement>
 
         <GridElement
@@ -184,36 +130,18 @@ const Profile = () => {
         </GridElement>
 
         <GridElement
-          id="moutains"
+          id="ground"
           left={0}
-          height={4}
-          zIndex={1}
-          bottom={GROUND_HEIGHT}
+          bottom={0}
           width={GRID_WIDTH}
+          height={GRID_HEIGHT}
+          zIndex={0}
         >
-          <Mountains
-            angle={160}
-            percent={60}
-            moutainWidth={0}
-            mountainHeight={20}
-            background="#b4e4eb"
-          />
-        </GridElement>
-
-        <GridElement
-          id="moutains2"
-          left={0}
-          height={3}
-          zIndex={2}
-          bottom={GROUND_HEIGHT}
-          width={GRID_WIDTH}
-        >
-          <Mountains
-            angle={164}
-            percent={72}
-            moutainWidth={15}
-            mountainHeight={30}
-            background="#a5ccd0"
+          <BrickBg
+            color1="#444"
+            color2="#232323"
+            color3="#232323"
+            style={{ width: "100%" }}
           />
         </GridElement>
 
@@ -223,12 +151,18 @@ const Profile = () => {
           bottom={0}
           width={GRID_WIDTH}
           height={GROUND_HEIGHT}
+          zIndex={1}
         >
-          <Ground grassColor="#4ba446" groundColor="#896443" />
+          <BrickBg
+            color1="silver"
+            color2="gray"
+            color3="gray"
+            style={{ width: "100%" }}
+          />
         </GridElement>
       </Grid>
     </>
   );
 };
 
-export default Profile;
+export default Skills;
