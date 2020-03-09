@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 import { Ground } from "../components/Design/Ground";
 import { Hero } from "../components/Design/Hero";
@@ -50,7 +50,15 @@ const HERO_SIZE = 1;
 const JUMP = 3;
 const ELEMENT_WIDTH = 60;
 
+// Elements
+const SKILLS_LEFT = 20;
+const CASTLE_LEFT = 40;
+
 const Profile = () => {
+  const [skillsBottom, setSkillsBottom] = useState(GROUND_HEIGHT + JUMP);
+  const [showPopin, setShowPopin] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+
   const {
     canJump,
     heroBottom,
@@ -64,41 +72,47 @@ const Profile = () => {
     space,
     positionInTheGrid
   } = useGameEngine({
+    isActive,
     groundHeight: GROUND_HEIGHT,
-    isActive: true,
     jump: JUMP,
     elementWidth: ELEMENT_WIDTH,
     maxRightOffset: GRID_WIDTH
   });
 
-  const [skillsBottom, setSkillsBottom] = useState(GROUND_HEIGHT + JUMP);
-  const [showPopin, setShowPopin] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     if (top) {
-      console.log(positionInTheGrid);
+      if (positionInTheGrid === CASTLE_LEFT + 2) {
+        setTimeout(() => {
+          history.push("/skills");
+        }, 200);
+      }
     }
   }, [top]);
 
   useEffect(() => {
     if (space) {
-      if (positionInTheGrid === 15) {
+      if (positionInTheGrid === SKILLS_LEFT) {
         setTimeout(() => setSkillsBottom(GROUND_HEIGHT + JUMP + 1), 100);
-        setTimeout(() => setSkillsBottom(GROUND_HEIGHT + JUMP), 300);
+        setTimeout(() => {
+          setSkillsBottom(GROUND_HEIGHT + JUMP);
+          setShowPopin(true);
+          setIsActive(false);
+        }, 300);
       }
     }
   }, [space]);
 
-  // if (heroLeft === GRID_WIDTH - 1) {
-  //   setTimeout(() => {
-  //     history.push("/skills");
-  //   }, 200);
-  // }
-
   return (
     <>
       {showPopin && (
-        <Modal onClose={() => setShowPopin(false)}>
+        <Modal
+          onClose={() => {
+            setShowPopin(false);
+            setIsActive(true);
+          }}
+        >
           <ModalContent>
             <img src={Avatar} alt="test" />
             <ModalRight>
@@ -190,7 +204,7 @@ const Profile = () => {
 
         <GridElement
           id="skills"
-          left={firstPlanLeft + 15}
+          left={firstPlanLeft + SKILLS_LEFT}
           bottom={skillsBottom}
           zIndex={3}
         >
@@ -246,7 +260,7 @@ const Profile = () => {
 
         <GridElement
           id="castle"
-          left={firstPlanLeft + 20}
+          left={firstPlanLeft + CASTLE_LEFT}
           height={5}
           zIndex={2}
           bottom={GROUND_HEIGHT}

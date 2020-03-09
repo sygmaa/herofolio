@@ -82,7 +82,10 @@ const useGameEngine = ({
   };
 
   const handleHeroWalking = () => {
-    if ((left && heroLeft > 1) || (right && heroLeft < screenSize - 1)) {
+    if (
+      (!right && left && heroLeft > 1) ||
+      (!left && right && heroLeft < screenSize - 1)
+    ) {
       setIsWalking(true);
     } else {
       setIsWalking(false);
