@@ -29,9 +29,10 @@ const useGameEngine = ({
   const [isWalking, setIsWalking] = useState(false);
   const [canJump, setCanJump] = useState(true);
 
-  const left = useKeyPress("ArrowLeft");
-  const right = useKeyPress("ArrowRight");
-  const space = useKeyPress(" ");
+  const top = useKeyPress(["ArrowUp", "z"]);
+  const left = useKeyPress(["ArrowLeft", "q"]);
+  const right = useKeyPress(["ArrowRight", "d"]);
+  const space = useKeyPress([" "]);
 
   const screenSize = Math.round(window.innerWidth / elementWidth) - 1;
   const centerPosition = Math.round(screenSize / 2) - 1;
@@ -42,7 +43,7 @@ const useGameEngine = ({
     window.innerWidth;
 
   const rightHandler = () => {
-    if (!right) return;
+    if (!right || left) return;
 
     if (heroLeft >= centerPosition) {
       if (canGoToRight) {
@@ -56,7 +57,7 @@ const useGameEngine = ({
   };
 
   const leftHandler = () => {
-    if (!left) return;
+    if (!left || right) return;
 
     if (heroLeft > centerPosition || heroLeft < centerPosition) {
       if (heroLeft > 1) {
@@ -81,9 +82,7 @@ const useGameEngine = ({
   };
 
   const handleHeroWalking = () => {
-    if (left && heroLeft > 1) {
-      setIsWalking(true);
-    } else if (right && heroLeft < screenSize - 1) {
+    if ((left && heroLeft > 1) || (right && heroLeft < screenSize - 1)) {
       setIsWalking(true);
     } else {
       setIsWalking(false);
@@ -95,12 +94,6 @@ const useGameEngine = ({
       rightHandler();
       leftHandler();
       handleHeroWalking();
-
-      // if (heroLeft === GRID_WIDTH - 1) {
-      //   setTimeout(() => {
-      //     history.push("/skills");
-      //   }, 200);
-      // }
     }
   };
 
@@ -116,7 +109,10 @@ const useGameEngine = ({
     fourthPlanLeft: firstPlanLeft * FOURTH_PLAN_STEP,
     heroBottom,
     isWalking,
-    canJump
+    canJump,
+    positionInTheGrid: heroLeft + -firstPlanLeft,
+    top,
+    space
   };
 };
 

@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // import { useHistory } from "react-router-dom";
 
 import { Ground } from "../components/Design/Ground";
 import { Hero } from "../components/Design/Hero";
 import { Sun } from "../components/Design/Sun";
-import { HighlightedText } from "../components/Design/HighlightedText";
 import Case from "../components/Design/Case";
 import Grid from "../components/Grid";
 import GridElement from "../components/Grid/GridElement";
@@ -60,7 +59,10 @@ const Profile = () => {
     secondPlanLeft,
     thirdPlanLeft,
     fourthPlanLeft,
-    heroLeft
+    heroLeft,
+    top,
+    space,
+    positionInTheGrid
   } = useGameEngine({
     groundHeight: GROUND_HEIGHT,
     isActive: true,
@@ -72,10 +74,20 @@ const Profile = () => {
   const [skillsBottom, setSkillsBottom] = useState(GROUND_HEIGHT + JUMP);
   const [showPopin, setShowPopin] = useState(false);
 
-  // const history = useHistory();
-  // if (heroLeft === SKILLS_LEFT) {
-  //   onSkillsCollision();
-  // }
+  useEffect(() => {
+    if (top) {
+      console.log(positionInTheGrid);
+    }
+  }, [top]);
+
+  useEffect(() => {
+    if (space) {
+      if (positionInTheGrid === 15) {
+        setTimeout(() => setSkillsBottom(GROUND_HEIGHT + JUMP + 1), 100);
+        setTimeout(() => setSkillsBottom(GROUND_HEIGHT + JUMP), 300);
+      }
+    }
+  }, [space]);
 
   // if (heroLeft === GRID_WIDTH - 1) {
   //   setTimeout(() => {
