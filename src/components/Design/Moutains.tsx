@@ -23,10 +23,10 @@ export const Mountains = styled.div<MountainProps>`
     const pMore = percent + 1;
 
     return `
-    linear-gradient(-${angle}deg,transparent ${percent}%, ${color} ${percent}%) ${w} 0 / ${h} repeat-x,
-    linear-gradient(${angle}deg,transparent ${percent}%, ${color} ${percent}%) ${w} 0 / ${h} repeat-x,
-    linear-gradient(-${angle}deg,transparent ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} repeat-x,
-    linear-gradient(${angle}deg,transparent ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} repeat-x
+    linear-gradient(-${angle}deg,transparent ${percent}%, ${color} ${percent}%) ${w} 0 / ${h} 100% repeat-x,
+    linear-gradient(${angle}deg,transparent ${percent}%, ${color} ${percent}%) ${w} 0 / ${h} 100% repeat-x,
+    linear-gradient(-${angle}deg,transparent ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} 100% repeat-x,
+    linear-gradient(${angle}deg,transparent ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} 100% repeat-x
   `;
   }};
 `;

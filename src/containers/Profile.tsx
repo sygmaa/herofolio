@@ -85,10 +85,6 @@ const Profile = () => {
 
   return (
     <>
-      <HighlightedText>
-        Hello, I'm Kévin Dumont, passionate web developer
-      </HighlightedText>
-
       {showPopin && (
         <Modal onClose={() => setShowPopin(false)}>
           <ModalContent>

@@ -28,8 +28,8 @@ interface GridElementBottomProps extends BaseGridElementProps {
 export type GridElementProps = (GridElementRightProps | GridElementLeftProps) &
   (GridElementTopProps | GridElementBottomProps);
 
-const GridElement = ({}: GridElementProps) => {
-  return <></>;
+const GridElement = (props: GridElementProps) => {
+  return <>{props}</>;
 };
 
 export default GridElement;

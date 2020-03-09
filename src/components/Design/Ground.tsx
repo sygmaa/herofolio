@@ -28,8 +28,8 @@ const dots = dotsValues
   .join(",");
 
 const grass = (color: string) => `
-  linear-gradient(30deg, transparent 72%, ${color} 73%) 0 0 / 20px repeat-x,
-  linear-gradient(-30deg, transparent 72%, ${color} 73%) 0 0 / 20px repeat-x
+  linear-gradient(30deg, transparent 50%, ${color} 50%) 0 0 / 20px 30px repeat-x,
+  linear-gradient(-30deg, transparent 50%, ${color} 50%) 0 0 / 20px 30px repeat-x
 `;
 
 export interface GroundProps {
