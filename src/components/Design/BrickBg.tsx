@@ -8,9 +8,9 @@ const wall = (color1?: string, color2?: string, color3?: string) => {
   return `
     linear-gradient(to top, ${c1} 0%, ${c1} 1px, transparent 1px, transparent 14px, ${c1} 14px, ${c1} 16px, transparent 16px, transparent 29px, ${c1} 29px, ${c1} 30px) 0 0 / 30px 30px,
     linear-gradient(45deg, ${c2} 0%, ${c2} 25%, transparent 25%, transparent 75%, ${c3} 75%, ${c3} 100%) 13px 0 / 30px 30px,
-    linear-gradient(45deg, ${c3} 0%, ${c3} 25%, transparent 25%, transparent 75%, ${c2} 75%, ${c2} 100%) 28px 15px / 30px 30px,
+    linear-gradient(45deg, ${c3} 0%, ${c3} 25%, transparent 25%, transparent 75%, ${c2} 75%, ${c2} 100%) 27px 14px / 30px 30px,
     linear-gradient(45deg, ${c2} 0%, ${c2} 25%, transparent 25%, transparent 75%, ${c3} 75%, ${c3} 100%) 0 0 / 30px 30px,
-    linear-gradient(45deg, ${c3} 0%, ${c3} 25%, transparent 25%, transparent 75%, ${c2} 75%, ${c2} 100%) 15px 15px / 30px 30px,
+    linear-gradient(45deg, ${c3} 0%, ${c3} 25%, transparent 25%, transparent 75%, ${c2} 75%, ${c2} 100%) 16px 16px / 30px 30px,
     ${c1}
   `;
 };

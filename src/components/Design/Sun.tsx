@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const Sun = styled.div`
-  min-width: 200px;
-  min-height: 200px;
-  max-width: 200px;
-  max-height: 200px;
+  min-width: 300px;
+  min-height: 300px;
+  max-width: 300px;
+  max-height: 300px;
   background: radial-gradient(
     100% 100% at 50% 50%,
     #ffd600 28%,

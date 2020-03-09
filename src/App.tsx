@@ -1,8 +1,8 @@
 import React from "react";
-
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+
 import Profile from "./containers/Profile";
-import Skills from "./containers/Skills";
+// import Skills from "./containers/Skills";
 import About from "./components/About";
 import GlobalStyles from "./components/Design/GlobalStyles";
 
@@ -10,6 +10,7 @@ const App = () => {
   return (
     <Router>
       <GlobalStyles />
+
       <About />
 
       <Switch>
@@ -17,7 +18,7 @@ const App = () => {
           <Profile />
         </Route>
         <Route path="/skills" exact>
-          <Skills />
+          {/* <Skills /> */}
         </Route>
       </Switch>
     </Router>

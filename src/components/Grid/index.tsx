@@ -1,26 +1,15 @@
 import React, { ReactElement } from "react";
 import { GridElementProps } from "./GridElement";
 import InternalGridElement from "./InternalGridElement";
-import styled, { css } from "styled-components";
 
 export interface GridProps {
   children: ReactElement<GridElementProps>[];
-  nbColumns: number;
   nbLines: number;
   width: string;
   height: string;
+  elementWidth: string;
   [k: string]: any;
 }
-
-const GridStyle = styled.div<{ width: string; height: string }>`
-  position: relative;
-  overflow: hidden;
-
-  ${({ width, height }) => css`
-    width: ${width};
-    height: ${height};
-  `}
-`;
 
 const Grid = ({
   children: gridElements,
@@ -28,25 +17,34 @@ const Grid = ({
   nbLines,
   width,
   height,
+  elementWidth,
   ...props
 }: GridProps) => {
-  const columnSize = `calc(${width} / ${nbColumns})`;
   const lineSize = `calc(${height} / ${nbLines})`;
 
   return (
-    <GridStyle width={width} height={height} {...props}>
+    <div
+      {...props}
+      style={{
+        ...(props.style || {}),
+        width,
+        height,
+        position: "relative",
+        overflow: "hidden"
+      }}
+    >
       {gridElements.map(({ props: { children, id, ...others } }) => (
         <InternalGridElement
           key={id}
           id={id}
-          columnSize={columnSize}
+          columnSize={elementWidth}
           lineSize={lineSize}
           {...others}
         >
           {children}
         </InternalGridElement>
       ))}
-    </GridStyle>
+    </div>
   );
 };
 

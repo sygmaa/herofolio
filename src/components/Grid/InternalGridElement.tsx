@@ -13,8 +13,6 @@ interface GridElementStyleProps {
   gridHeight: string;
   top?: string;
   bottom?: string;
-  left?: string;
-  right?: string;
   transition?: string;
   zIndex?: number;
 }
@@ -23,6 +21,7 @@ const GridElementStyle = styled.div<GridElementStyleProps>`
   position: absolute;
   display: flex;
   justify-content: center;
+  transition: 0.3s all linear;
 
   ${({ zIndex }) =>
     zIndex !== undefined &&
@@ -52,18 +51,6 @@ const GridElementStyle = styled.div<GridElementStyleProps>`
     css`
       bottom: ${bottom};
     `};
-
-  ${({ left }) =>
-    left !== undefined &&
-    css`
-      left: ${left};
-    `};
-
-  ${({ right }) =>
-    right !== undefined &&
-    css`
-      right: ${right};
-    `};
 `;
 
 const InternalGridElement = ({
@@ -87,9 +74,12 @@ const InternalGridElement = ({
       bottom={
         bottom !== undefined ? `calc(${lineSize} * ${bottom})` : undefined
       }
-      left={left !== undefined ? `calc(${columnSize} * ${left})` : undefined}
-      right={right !== undefined ? `calc(${columnSize} * ${right})` : undefined}
       transition={transition}
+      style={{
+        right:
+          right !== undefined ? `calc(${columnSize} * ${right})` : undefined,
+        left: left !== undefined ? `calc(${columnSize} * ${left})` : undefined
+      }}
     >
       {children}
     </GridElementStyle>

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
-import useInterval from "use-interval";
+import React, { useState } from "react";
+// import { useHistory } from "react-router-dom";
 
-import useKeyPress from "../hooks/useKeyPress";
 import { Ground } from "../components/Design/Ground";
 import { Hero } from "../components/Design/Hero";
 import { Sun } from "../components/Design/Sun";
@@ -17,7 +16,8 @@ import Avatar from "../assets/img/avatar.jpg";
 import styled from "styled-components";
 import { MEDIA } from "../constants";
 import Castle from "../components/Design/Castle";
-import { useHistory } from "react-router-dom";
+
+import useGameEngine from "../hooks/useGameEngine";
 
 const ModalContent = styled.div`
   display: flex;
@@ -44,87 +44,44 @@ const ModalRight = styled.div`
   }
 `;
 
-const GRID_WIDTH = 16;
+const GRID_WIDTH = 120;
 const GRID_HEIGHT = 10;
-const GROUND_HEIGHT = 1;
+const GROUND_HEIGHT = 2;
 const HERO_SIZE = 1;
-const STEP = 1;
 const JUMP = 3;
-const SKILLS_LEFT = 8;
+const ELEMENT_WIDTH = 60;
 
 const Profile = () => {
-  const [heroLeft, setHeroLeft] = useState(1);
-  const [heroBottom, setHeroBottom] = useState(GROUND_HEIGHT);
-  const [isWalking, setIsWalking] = useState(false);
-  const [canJump, setCanJump] = useState(true);
+  const {
+    canJump,
+    heroBottom,
+    isWalking,
+    firstPlanLeft,
+    secondPlanLeft,
+    thirdPlanLeft,
+    fourthPlanLeft,
+    heroLeft
+  } = useGameEngine({
+    groundHeight: GROUND_HEIGHT,
+    isActive: true,
+    jump: JUMP,
+    elementWidth: ELEMENT_WIDTH,
+    maxRightOffset: GRID_WIDTH
+  });
+
   const [skillsBottom, setSkillsBottom] = useState(GROUND_HEIGHT + JUMP);
   const [showPopin, setShowPopin] = useState(false);
 
-  const history = useHistory();
+  // const history = useHistory();
+  // if (heroLeft === SKILLS_LEFT) {
+  //   onSkillsCollision();
+  // }
 
-  const left = useKeyPress("ArrowLeft");
-  const right = useKeyPress("ArrowRight");
-  const space = useKeyPress(" ");
-
-  const rightHandler = () =>
-    right && heroLeft < GRID_WIDTH - STEP && setHeroLeft(heroLeft + STEP);
-
-  const leftHandler = () =>
-    left && heroLeft > STEP && setHeroLeft(heroLeft - STEP);
-
-  const onSkillsCollision = () => {
-    setTimeout(() => {
-      setSkillsBottom(GROUND_HEIGHT + JUMP + 1);
-    }, 150);
-
-    setTimeout(() => {
-      setSkillsBottom(GROUND_HEIGHT + JUMP);
-    }, 300);
-
-    setTimeout(() => {
-      setShowPopin(true);
-      setIsWalking(false);
-    }, 400);
-  };
-
-  const onJumping = () => {
-    if (space && canJump && !showPopin) {
-      setHeroBottom(GROUND_HEIGHT + JUMP);
-      setCanJump(false);
-      setTimeout(() => setHeroBottom(GROUND_HEIGHT), 200);
-      setTimeout(() => setCanJump(true), 400);
-
-      if (heroLeft === SKILLS_LEFT) {
-        onSkillsCollision();
-      }
-    }
-  };
-
-  const handleHeroWalking = () => {
-    if (left || right) {
-      setIsWalking(true);
-    } else {
-      setIsWalking(false);
-    }
-  };
-
-  const arrowsListener = () => {
-    if (!showPopin) {
-      rightHandler();
-      leftHandler();
-      handleHeroWalking();
-
-      if (heroLeft === GRID_WIDTH - 1) {
-        setTimeout(() => {
-          history.push("/skills");
-        }, 200);
-      }
-    }
-  };
-
-  useInterval(arrowsListener, 200, true);
-
-  useEffect(onJumping, [space]);
+  // if (heroLeft === GRID_WIDTH - 1) {
+  //   setTimeout(() => {
+  //     history.push("/skills");
+  //   }, 200);
+  // }
 
   return (
     <>
@@ -158,7 +115,7 @@ const Profile = () => {
       <Grid
         width="100vw"
         height="100vh"
-        nbColumns={GRID_WIDTH}
+        elementWidth={`${ELEMENT_WIDTH}px`}
         nbLines={GRID_HEIGHT}
         style={{
           backgroundImage: "linear-gradient(170deg,#c3efff 0%,#cdfaff 95%)"
@@ -167,10 +124,10 @@ const Profile = () => {
         <GridElement
           id="cloud1"
           top={2}
-          right={0}
+          left={2 + fourthPlanLeft}
           width={3}
           height={2}
-          zIndex={0}
+          zIndex={1}
         >
           <Cloud color="#fff" />
         </GridElement>
@@ -178,10 +135,10 @@ const Profile = () => {
         <GridElement
           id="cloud2"
           top={3}
-          left={2}
+          left={9 + fourthPlanLeft}
           width={3}
           height={2}
-          zIndex={0}
+          zIndex={1}
         >
           <Cloud color="#fff" />
         </GridElement>
@@ -189,24 +146,45 @@ const Profile = () => {
         <GridElement
           id="cloud3"
           top={1}
-          left={7}
+          left={17 + fourthPlanLeft}
           width={3}
           height={2}
-          zIndex={0}
+          zIndex={1}
         >
           <Cloud color="#fff" />
         </GridElement>
 
-        <GridElement id="sun" left={3} bottom={1} width={3} height={3}>
+        <GridElement
+          id="cloud4"
+          top={2}
+          left={25 + fourthPlanLeft}
+          width={3}
+          height={2}
+          zIndex={1}
+        >
+          <Cloud color="#fff" />
+        </GridElement>
+
+        <GridElement
+          id="cloud5"
+          top={1}
+          left={35 + fourthPlanLeft}
+          width={3}
+          height={2}
+          zIndex={1}
+        >
+          <Cloud color="#fff" />
+        </GridElement>
+
+        <GridElement id="sun" left={6} bottom={3} width={3} height={3}>
           <Sun />
         </GridElement>
 
         <GridElement
           id="skills"
-          left={SKILLS_LEFT}
+          left={firstPlanLeft + 15}
           bottom={skillsBottom}
           zIndex={3}
-          transition={"all 0.3s ease"}
         >
           <Case onClick={() => setShowPopin(true)}>Profile</Case>
         </GridElement>
@@ -217,7 +195,6 @@ const Profile = () => {
           left={heroLeft}
           zIndex={10}
           height={HERO_SIZE}
-          transition={"all 0.3s linear"}
         >
           <Hero
             isWalking={isWalking && canJump}
@@ -227,52 +204,52 @@ const Profile = () => {
 
         <GridElement
           id="moutains"
-          left={0}
+          left={secondPlanLeft - 8}
           height={4}
           zIndex={1}
           bottom={GROUND_HEIGHT}
-          width={GRID_WIDTH}
+          width={GRID_WIDTH + 8}
         >
           <Mountains
-            angle={160}
-            percent={60}
-            moutainWidth={0}
-            mountainHeight={20}
+            angle={165}
+            percent={65}
+            moutainWidth={5}
+            mountainHeight={15}
             background="#b4e4eb"
           />
         </GridElement>
 
         <GridElement
           id="moutains2"
-          left={0}
+          left={thirdPlanLeft}
           height={3}
           zIndex={2}
           bottom={GROUND_HEIGHT}
           width={GRID_WIDTH}
         >
           <Mountains
-            angle={164}
-            percent={72}
-            moutainWidth={15}
-            mountainHeight={30}
+            angle={165}
+            percent={65}
+            moutainWidth={5}
+            mountainHeight={15}
             background="#a5ccd0"
           />
         </GridElement>
 
         <GridElement
           id="castle"
-          right={0}
+          left={firstPlanLeft + 20}
           height={5}
           zIndex={2}
           bottom={GROUND_HEIGHT}
-          width={2}
+          width={5}
         >
           <Castle />
         </GridElement>
 
         <GridElement
           id="ground"
-          left={0}
+          left={firstPlanLeft}
           bottom={0}
           width={GRID_WIDTH}
           height={GROUND_HEIGHT}
