@@ -1462,6 +1462,13 @@
     "@types/history" "*"
     "@types/react" "*"
 
+"@types/react-touch@1.8.3":
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/@types/react-touch/-/react-touch-1.8.3.tgz#ea82b3708a0e893b76532eafd0d6f3f9f5cdfbcd"
+  integrity sha512-3HdF4z/vSUmjMwrC5kW1oeDCym0ixV/zhiC90Sik4Oel+SGR4waGspsx2PGOHP46Laqa9CpBZz4v1eKRU4ZBug==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.9.0":
   version "16.9.19"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.19.tgz#c842aa83ea490007d29938146ff2e4d9e4360c40"

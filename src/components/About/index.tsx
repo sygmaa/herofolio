@@ -20,15 +20,11 @@ export const AboutButton = styled.button`
   font-weight: bold;
   border: none;
   transition: box-shadow 0.3s ease;
-
-  ${MEDIA.MIN_S} {
-    right: 20px;
-  }
+  left: 15px;
+  bottom: 15px;
 
   ${MEDIA.MAX_S} {
-    padding: 10px 15px;
-    left: 15px;
-    bottom: 15px;
+    padding: 10px 15px 10px 15px;
   }
 
   &:hover {

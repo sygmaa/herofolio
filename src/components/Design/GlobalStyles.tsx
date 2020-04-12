@@ -11,6 +11,12 @@ export default createGlobalStyle`
     font-family: 'PT Mono', monospace;
     font-size: 1.6rem;
     min-width: 300px;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  * {
+    touch-action: manipulation;
   }
  
   p {

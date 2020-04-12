@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import withSizes, { Sizes } from "react-sizes";
 
 import { Ground } from "../components/Design/Ground";
 import { Hero } from "../components/Design/Hero";
@@ -11,12 +12,12 @@ import { Mountains } from "../components/Design/Moutains";
 import { Cloud } from "../components/Design/Cloud";
 import Modal from "../components/Modal";
 
-import Avatar from "../assets/img/avatar.jpg";
 import styled from "styled-components";
 import { MEDIA } from "../constants";
 import Castle from "../components/Design/Castle";
 
 import useGameEngine from "../hooks/useGameEngine";
+import { Door } from "../components/Design/Door";
 
 const ModalContent = styled.div`
   display: flex;
@@ -30,7 +31,7 @@ const ModalContent = styled.div`
 `;
 
 const ModalRight = styled.div`
-  padding: 20px;
+  padding: 30px;
   overflow: auto;
 
   h2 {
@@ -40,10 +41,11 @@ const ModalRight = styled.div`
 
   p {
     line-height: 2.6rem;
+    font-family: "Montserrat", sans-serif;
   }
 `;
 
-const GRID_WIDTH = 120;
+const GRID_WIDTH = 60;
 const GRID_HEIGHT = 10;
 const GROUND_HEIGHT = 2;
 const HERO_SIZE = 1;
@@ -51,13 +53,32 @@ const JUMP = 3;
 const ELEMENT_WIDTH = 60;
 
 // Elements
-const SKILLS_LEFT = 20;
-const CASTLE_LEFT = 40;
+const PROFILE_LEFT = 20;
+export const CASTLE_LEFT = 40;
 
-const Profile = () => {
+export interface ProfileProps {
+  touchSpace: boolean;
+  touchTop: boolean;
+  touchLeft: boolean;
+  touchRight: boolean;
+  touchBottom: boolean;
+  width: number;
+  height: number;
+}
+
+const Profile = ({
+  touchSpace,
+  touchTop,
+  touchLeft,
+  touchRight,
+  touchBottom,
+  width,
+  height
+}: ProfileProps) => {
   const [skillsBottom, setSkillsBottom] = useState(GROUND_HEIGHT + JUMP);
   const [showPopin, setShowPopin] = useState(false);
   const [isActive, setIsActive] = useState(true);
+  const location = useLocation<undefined | { heroPosition: number }>();
 
   const {
     canJump,
@@ -76,14 +97,31 @@ const Profile = () => {
     groundHeight: GROUND_HEIGHT,
     jump: JUMP,
     elementWidth: ELEMENT_WIDTH,
-    maxRightOffset: GRID_WIDTH
+    maxRightOffset: GRID_WIDTH,
+    touchSpace,
+    touchTop,
+    touchLeft,
+    touchRight,
+    touchBottom,
+    initPosition: location.state?.heroPosition,
+    screenWidth: width
   });
 
   const history = useHistory();
 
+  const closeModal = () => {
+    setShowPopin(false);
+    setIsActive(true);
+  };
+
+  const openModal = () => {
+    setShowPopin(true);
+    setIsActive(false);
+  };
+
   useEffect(() => {
     if (top) {
-      if (positionInTheGrid === CASTLE_LEFT + 2) {
+      if (isActive && positionInTheGrid === CASTLE_LEFT + 2) {
         setTimeout(() => {
           history.push("/skills");
         }, 200);
@@ -93,12 +131,11 @@ const Profile = () => {
 
   useEffect(() => {
     if (space) {
-      if (positionInTheGrid === SKILLS_LEFT) {
+      if (isActive && positionInTheGrid === PROFILE_LEFT) {
         setTimeout(() => setSkillsBottom(GROUND_HEIGHT + JUMP + 1), 100);
         setTimeout(() => {
           setSkillsBottom(GROUND_HEIGHT + JUMP);
-          setShowPopin(true);
-          setIsActive(false);
+          openModal();
         }, 300);
       }
     }
@@ -107,19 +144,13 @@ const Profile = () => {
   return (
     <>
       {showPopin && (
-        <Modal
-          onClose={() => {
-            setShowPopin(false);
-            setIsActive(true);
-          }}
-        >
+        <Modal onClose={closeModal}>
           <ModalContent>
-            <img src={Avatar} alt="test" />
             <ModalRight>
               <h2>
                 I'm <strong>Kévin Dumont</strong>, a web artisan
               </h2>
-              <p style={{ fontFamily: '"Montserrat", sans-serif' }}>
+              <p>
                 I'm creative. I create websites in their entirety. Design,
                 development, deployment. So, we can say I'm a full stack
                 developer. I love challenges. I'm a real passionate. I'm 100%
@@ -136,7 +167,7 @@ const Profile = () => {
       {/* Game elements */}
       <Grid
         width="100vw"
-        height="100vh"
+        height={window.innerHeight + "px"}
         elementWidth={`${ELEMENT_WIDTH}px`}
         nbLines={GRID_HEIGHT}
         style={{
@@ -204,11 +235,11 @@ const Profile = () => {
 
         <GridElement
           id="skills"
-          left={firstPlanLeft + SKILLS_LEFT}
+          left={firstPlanLeft + PROFILE_LEFT}
           bottom={skillsBottom}
           zIndex={3}
         >
-          <Case onClick={() => setShowPopin(true)}>Profile</Case>
+          <Case onClick={openModal}>Profile</Case>
         </GridElement>
 
         <GridElement
@@ -259,6 +290,16 @@ const Profile = () => {
         </GridElement>
 
         <GridElement
+          id="door"
+          left={firstPlanLeft + CASTLE_LEFT + 1}
+          bottom={GROUND_HEIGHT}
+          width={3}
+          height={3}
+          zIndex={3}
+        >
+          <Door />
+        </GridElement>
+        <GridElement
           id="castle"
           left={firstPlanLeft + CASTLE_LEFT}
           height={5}
@@ -283,4 +324,6 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+const mapSizesToProps = (sizes: Sizes) => sizes;
+
+export default withSizes<Sizes, ProfileProps>(mapSizesToProps)(Profile);

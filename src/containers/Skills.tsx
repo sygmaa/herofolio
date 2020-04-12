@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import { Hero } from "../components/Design/Hero";
@@ -7,6 +7,9 @@ import GridElement from "../components/Grid/GridElement";
 
 import useGameEngine from "../hooks/useGameEngine";
 import { BrickBg } from "../components/Design/BrickBg";
+import { Door } from "../components/Design/Door";
+import { CASTLE_LEFT } from "./Profile";
+import WithSizes, { Sizes } from "react-sizes";
 
 const GRID_WIDTH = 70;
 const GRID_HEIGHT = 10;
@@ -15,7 +18,27 @@ const HERO_SIZE = 1;
 const JUMP = 3;
 const ELEMENT_WIDTH = 60;
 
-const Skills = () => {
+export interface SkillProps {
+  touchSpace: boolean;
+  touchTop: boolean;
+  touchLeft: boolean;
+  touchRight: boolean;
+  touchBottom: boolean;
+  width: number;
+  height: number;
+}
+
+const Skills = ({
+  touchSpace,
+  touchTop,
+  touchLeft,
+  touchRight,
+  touchBottom,
+  width,
+  height
+}: SkillProps) => {
+  const [isActive, setIsActive] = useState(true);
+
   const {
     canJump,
     heroBottom,
@@ -29,17 +52,28 @@ const Skills = () => {
     space,
     positionInTheGrid
   } = useGameEngine({
+    isActive,
     groundHeight: GROUND_HEIGHT,
-    isActive: true,
     jump: JUMP,
     elementWidth: ELEMENT_WIDTH,
-    maxRightOffset: GRID_WIDTH
+    maxRightOffset: GRID_WIDTH,
+    touchSpace,
+    touchTop,
+    touchLeft,
+    touchRight,
+    touchBottom,
+    screenWidth: width
   });
 
   const history = useHistory();
 
   useEffect(() => {
     if (top) {
+      if (positionInTheGrid === 1) {
+        setTimeout(() => {
+          history.push("/", { heroPosition: CASTLE_LEFT + 2 });
+        }, 200);
+      }
     }
   }, [top]);
 
@@ -53,7 +87,7 @@ const Skills = () => {
       {/* Game elements */}
       <Grid
         width="100vw"
-        height="100vh"
+        height={window.innerHeight + "px"}
         elementWidth={`${ELEMENT_WIDTH}px`}
         nbLines={GRID_HEIGHT}
         style={{
@@ -71,6 +105,17 @@ const Skills = () => {
             isWalking={isWalking && canJump}
             isJumping={heroBottom !== GROUND_HEIGHT}
           />
+        </GridElement>
+
+        <GridElement
+          id="door"
+          left={secondPlanLeft}
+          bottom={GROUND_HEIGHT}
+          width={3}
+          height={3}
+          zIndex={1}
+        >
+          <Door />
         </GridElement>
 
         <GridElement
@@ -114,4 +159,6 @@ const Skills = () => {
   );
 };
 
-export default Skills;
+const mapSizesToProps = (sizes: Sizes) => sizes;
+
+export default WithSizes<Sizes, SkillProps>(mapSizesToProps)(Skills);

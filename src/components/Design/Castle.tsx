@@ -1,11 +1,10 @@
 import React from "react";
+
 import { BrickBg } from "./BrickBg";
-import { Door } from "./Door";
 
 const Castle = () => {
   return (
     <>
-      <Door />
       <BrickBg
         color1="silver"
         color2="gray"
@@ -15,7 +14,7 @@ const Castle = () => {
           height: 30,
           position: "absolute",
           top: 0,
-          left: 0
+          left: 0,
         }}
       />
       <BrickBg
@@ -27,7 +26,7 @@ const Castle = () => {
           height: 30,
           position: "absolute",
           top: 0,
-          left: "40%"
+          left: "40%",
         }}
       />
       <BrickBg
@@ -39,15 +38,10 @@ const Castle = () => {
           height: 30,
           position: "absolute",
           top: 0,
-          left: "80%"
+          left: "80%",
         }}
       />
-      <BrickBg
-        color1="silver"
-        color2="gray"
-        color3="gray"
-        style={{ width: "100%", marginTop: 30 }}
-      />
+      <BrickBg color1="silver" color2="gray" color3="gray" style={{ width: "100%", marginTop: 30 }} />
     </>
   );
 };

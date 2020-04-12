@@ -29,7 +29,7 @@ const Grid = ({
         ...(props.style || {}),
         width,
         height,
-        position: "relative",
+        position: "fixed",
         overflow: "hidden"
       }}
     >

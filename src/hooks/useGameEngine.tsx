@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import useKeyPress from "./useKeyPress";
 import useInterval from "use-interval";
@@ -9,6 +9,13 @@ interface UseGameEngineProps {
   elementWidth: number;
   maxRightOffset: number;
   isActive: boolean;
+  touchSpace: boolean;
+  touchTop: boolean;
+  touchLeft: boolean;
+  touchRight: boolean;
+  touchBottom: boolean;
+  initPosition?: number;
+  screenWidth?: number;
 }
 
 const FIRST_PLAN_STEP = 1;
@@ -21,10 +28,45 @@ const useGameEngine = ({
   jump,
   elementWidth,
   maxRightOffset,
-  isActive
+  isActive,
+  touchSpace,
+  touchTop,
+  touchLeft,
+  touchRight,
+  touchBottom,
+  initPosition,
+  screenWidth = 0
 }: UseGameEngineProps) => {
-  const [heroLeft, setHeroLeft] = useState(1);
-  const [firstPlanLeft, setFirstPlanLeft] = useState(0);
+  const screenSize = Math.round(screenWidth / elementWidth) - 1;
+  const centerPosition = Math.round(screenSize / 2) - 1;
+
+  const getOffsetFromPosition = (position?: number) => {
+    let newFirstPlanLeft = 0;
+    let newHeroLeft = 1;
+
+    if (position) {
+      if (maxRightOffset - position <= screenSize) {
+        newHeroLeft = screenSize - Math.max(0, maxRightOffset - 2 - position);
+        newFirstPlanLeft = -(maxRightOffset - screenSize - 2);
+      } else {
+        if (position > centerPosition) {
+          newFirstPlanLeft = -position + centerPosition;
+          newHeroLeft = centerPosition;
+        } else {
+          newHeroLeft = position;
+        }
+      }
+    }
+
+    return [newHeroLeft, newFirstPlanLeft];
+  };
+
+  const [initialHeroLeft, initialFirstPlanLeft] = getOffsetFromPosition(
+    initPosition
+  );
+
+  const [heroLeft, setHeroLeft] = useState(initialHeroLeft);
+  const [firstPlanLeft, setFirstPlanLeft] = useState(initialFirstPlanLeft);
   const [heroBottom, setHeroBottom] = useState(groundHeight);
   const [isWalking, setIsWalking] = useState(false);
   const [canJump, setCanJump] = useState(true);
@@ -34,16 +76,14 @@ const useGameEngine = ({
   const right = useKeyPress(["ArrowRight", "d"]);
   const space = useKeyPress([" "]);
 
-  const screenSize = Math.round(window.innerWidth / elementWidth) - 1;
-  const centerPosition = Math.round(screenSize / 2) - 1;
   const canGoToRight =
     maxRightOffset * elementWidth +
       firstPlanLeft * elementWidth -
       elementWidth >=
-    window.innerWidth;
+    screenWidth;
 
   const rightHandler = () => {
-    if (!right || left) return;
+    if ((!right && !touchRight) || left) return;
 
     if (heroLeft >= centerPosition) {
       if (canGoToRight) {
@@ -57,7 +97,7 @@ const useGameEngine = ({
   };
 
   const leftHandler = () => {
-    if (!left || right) return;
+    if ((!left && !touchLeft) || right) return;
 
     if (heroLeft > centerPosition || heroLeft < centerPosition) {
       if (heroLeft > 1) {
@@ -73,7 +113,7 @@ const useGameEngine = ({
   };
 
   const onJumping = () => {
-    if (space && canJump && isActive) {
+    if (canJump && isActive) {
       setHeroBottom(groundHeight + jump);
       setCanJump(false);
       setTimeout(() => setHeroBottom(groundHeight), 200);
@@ -83,6 +123,8 @@ const useGameEngine = ({
 
   const handleHeroWalking = () => {
     if (
+      (touchLeft && heroLeft > 1) ||
+      (touchRight && heroLeft < screenSize - 1) ||
       (!right && left && heroLeft > 1) ||
       (!left && right && heroLeft < screenSize - 1)
     ) {
@@ -102,7 +144,19 @@ const useGameEngine = ({
 
   useInterval(arrowsListener, 200, true);
 
-  useEffect(onJumping, [space]);
+  useEffect(() => {
+    (space || touchSpace) && onJumping();
+  }, [space, touchSpace]);
+
+  useEffect(() => {
+    const currentPositionInGrid = Math.abs(firstPlanLeft) + Math.abs(heroLeft);
+    const [newHeroLeft, newFirstPlanLeft] = getOffsetFromPosition(
+      currentPositionInGrid
+    );
+
+    setHeroLeft(newHeroLeft);
+    setFirstPlanLeft(newFirstPlanLeft);
+  }, [screenWidth]);
 
   return {
     heroLeft,
@@ -114,8 +168,8 @@ const useGameEngine = ({
     isWalking,
     canJump,
     positionInTheGrid: heroLeft + -firstPlanLeft,
-    top,
-    space
+    top: top || touchTop,
+    space: space || touchSpace
   };
 };
 
