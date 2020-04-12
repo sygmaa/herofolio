@@ -71,7 +71,7 @@ const Skills = ({
     if (top) {
       if (positionInTheGrid === 1) {
         setTimeout(() => {
-          history.push("/", { heroPosition: CASTLE_LEFT + 2 });
+          history.push(`/?heroPosition=${CASTLE_LEFT + 2}`);
         }, 200);
       }
     }

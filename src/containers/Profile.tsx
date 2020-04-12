@@ -66,6 +66,10 @@ export interface ProfileProps {
   height: number;
 }
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const Profile = ({
   touchSpace,
   touchTop,
@@ -78,7 +82,7 @@ const Profile = ({
   const [skillsBottom, setSkillsBottom] = useState(GROUND_HEIGHT + JUMP);
   const [showPopin, setShowPopin] = useState(false);
   const [isActive, setIsActive] = useState(true);
-  const location = useLocation<undefined | { heroPosition: number }>();
+  const query = useQuery();
 
   const {
     canJump,
@@ -103,7 +107,7 @@ const Profile = ({
     touchLeft,
     touchRight,
     touchBottom,
-    initPosition: location.state?.heroPosition,
+    initPosition: Number.parseInt(query.get("heroPosition") || "") || 0,
     screenWidth: width
   });
 
