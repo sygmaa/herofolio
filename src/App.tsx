@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Profile from "./containers/Profile";
@@ -18,6 +18,13 @@ const App = ({ width }: AppProps) => {
   const [touchLeft, setTouchLeft] = useState(false);
   const [touchRight, setTouchRight] = useState(false);
   const [touchBottom, setTouchBottom] = useState(false);
+  const [showCommands, setShowCommands] = useState(false);
+
+  useEffect(() => {
+    if ("ontouchstart" in document.documentElement) {
+      setShowCommands(true);
+    }
+  }, []);
 
   return (
     <Router>
@@ -46,20 +53,22 @@ const App = ({ width }: AppProps) => {
         </Route>
       </Switch>
 
-      <Commands
-        onSpaceChange={v => {
-          if (v) {
-            setTouchSpace(true);
-            setTimeout(() => setTouchSpace(false), 300);
-          }
-        }}
-        onArrowUpChange={v => setTouchTop(v)}
-        onArrowLeftChange={v => setTouchLeft(v)}
-        onArrowRightChange={v => {
-          setTouchRight(v);
-        }}
-        onArrowDownChange={() => {}}
-      />
+      {showCommands && (
+        <Commands
+          onSpaceChange={v => {
+            if (v) {
+              setTouchSpace(true);
+              setTimeout(() => setTouchSpace(false), 300);
+            }
+          }}
+          onArrowUpChange={v => setTouchTop(v)}
+          onArrowLeftChange={v => setTouchLeft(v)}
+          onArrowRightChange={v => {
+            setTouchRight(v);
+          }}
+          onArrowDownChange={() => {}}
+        />
+      )}
     </Router>
   );
 };
