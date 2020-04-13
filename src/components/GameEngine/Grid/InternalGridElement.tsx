@@ -1,7 +1,7 @@
 import React from "react";
 
 import { GridElementProps } from "./GridElement";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export type InternalGridElement = GridElementProps & {
   columnSize: string;
@@ -15,42 +15,38 @@ interface GridElementStyleProps {
   bottom?: string;
   transition?: string;
   zIndex?: number;
+  right?: string;
+  left?: string;
 }
 
-const GridElementStyle = styled.div<GridElementStyleProps>`
+const GridElementStyle = styled.div.attrs(
+  ({
+    zIndex,
+    transition,
+    bottom,
+    top,
+    gridWidth: width,
+    gridHeight: height,
+    right,
+    left
+  }: GridElementStyleProps) => ({
+    style: {
+      zIndex,
+      width,
+      height,
+      transition,
+      bottom,
+      top,
+      right,
+      left: 0,
+      transform: `translateX(${left})`
+    }
+  })
+)<GridElementStyleProps>`
   position: absolute;
   display: flex;
   justify-content: center;
   transition: 0.3s all linear;
-
-  ${({ zIndex }) =>
-    zIndex !== undefined &&
-    css`
-      z-index: ${zIndex};
-    `};
-
-  ${({ gridWidth, gridHeight }) => css`
-    width: ${gridWidth};
-    height: ${gridHeight};
-  `}
-
-  ${({ transition }) =>
-    transition !== undefined &&
-    css`
-      transition: ${transition};
-    `};
-
-  ${({ top }) =>
-    top !== undefined &&
-    css`
-      top: ${top};
-    `};
-
-  ${({ bottom }) =>
-    bottom !== undefined &&
-    css`
-      bottom: ${bottom};
-    `};
 `;
 
 const InternalGridElement = ({
@@ -71,15 +67,12 @@ const InternalGridElement = ({
       gridWidth={`calc(${columnSize} * ${width || 1})`}
       gridHeight={`calc(${lineSize} * ${height || 1})`}
       top={top !== undefined ? `calc(${lineSize} * ${top})` : undefined}
+      right={right !== undefined ? `calc(${columnSize} * ${right})` : undefined}
+      left={left !== undefined ? `calc(${columnSize} * ${left})` : undefined}
+      transition={transition}
       bottom={
         bottom !== undefined ? `calc(${lineSize} * ${bottom})` : undefined
       }
-      transition={transition}
-      style={{
-        right:
-          right !== undefined ? `calc(${columnSize} * ${right})` : undefined,
-        left: left !== undefined ? `calc(${columnSize} * ${left})` : undefined
-      }}
     >
       {children}
     </GridElementStyle>

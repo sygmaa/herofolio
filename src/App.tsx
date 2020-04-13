@@ -1,31 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import Profile from "./containers/Profile";
 import About from "./components/About";
 import GlobalStyles from "./components/Design/GlobalStyles";
 import Skills from "./containers/Skills";
-import Commands from "./components/Commands";
 import WithSizes, { Sizes } from "react-sizes";
 
 interface AppProps {
   width: number;
 }
 
-const App = ({ width }: AppProps) => {
-  const [touchSpace, setTouchSpace] = useState(false);
-  const [touchTop, setTouchTop] = useState(false);
-  const [touchLeft, setTouchLeft] = useState(false);
-  const [touchRight, setTouchRight] = useState(false);
-  const [touchBottom, setTouchBottom] = useState(false);
-  const [showCommands, setShowCommands] = useState(false);
-
-  useEffect(() => {
-    if ("ontouchstart" in document.documentElement) {
-      setShowCommands(true);
-    }
-  }, []);
-
+const App = () => {
   return (
     <Router>
       <GlobalStyles />
@@ -34,41 +20,12 @@ const App = ({ width }: AppProps) => {
 
       <Switch>
         <Route path="/" exact>
-          <Profile
-            touchSpace={touchSpace}
-            touchTop={touchTop}
-            touchLeft={touchLeft}
-            touchRight={touchRight}
-            touchBottom={touchBottom}
-          />
+          <Profile />
         </Route>
         <Route path="/skills" exact>
-          <Skills
-            touchSpace={touchSpace}
-            touchTop={touchTop}
-            touchLeft={touchLeft}
-            touchRight={touchRight}
-            touchBottom={touchBottom}
-          />
+          <Skills />
         </Route>
       </Switch>
-
-      {showCommands && (
-        <Commands
-          onSpaceChange={v => {
-            if (v) {
-              setTouchSpace(true);
-              setTimeout(() => setTouchSpace(false), 300);
-            }
-          }}
-          onArrowUpChange={v => setTouchTop(v)}
-          onArrowLeftChange={v => setTouchLeft(v)}
-          onArrowRightChange={v => {
-            setTouchRight(v);
-          }}
-          onArrowDownChange={() => {}}
-        />
-      )}
     </Router>
   );
 };
