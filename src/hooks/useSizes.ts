@@ -7,7 +7,6 @@ const useSizes = () => {
   const onResize = () => {
     setHeight(window?.innerHeight);
     setWidth(window?.innerWidth);
-    console.log("window?.innerHeight", window?.innerHeight);
   };
 
   useEffect(() => {

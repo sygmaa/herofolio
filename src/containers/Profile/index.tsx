@@ -15,28 +15,25 @@ import Castle from "../../components/Design/Castle";
 import { Door } from "../../components/Design/Door";
 import { ModalRight, ModalContent } from "./styles";
 import useMedia from "../../hooks/useMedia";
+import {
+  GRID_ELEMENT_WIDTH,
+  GRID_SIZES_LARGE,
+  GRID_SIZES_SMALL
+} from "../../constants";
 
+// constants
 export const CASTLE_LEFT = 40;
-const GRID_WIDTH = 60;
-const ELEMENT_WIDTH = 60;
-const PROFILE_LEFT = 20;
-
-const SMALL = {
-  GRID_HEIGHT: 5,
-  GROUND_HEIGHT: 1,
-  HERO_SIZE: 1,
-  JUMP: 2,
+export const GRID_WIDTH = 60;
+export const PROFILE_LEFT = 20;
+export const SMALL = {
   CASTLE_HEIGHT: 7,
-  SUN_BOTTOM: 2
+  SUN_BOTTOM: 2,
+  SKILLS_BOTTOM: 3
 };
-
-const LARGE = {
-  GRID_HEIGHT: 10,
-  GROUND_HEIGHT: 2,
-  HERO_SIZE: 3,
-  JUMP: 3,
+export const LARGE = {
   CASTLE_HEIGHT: 6,
-  SUN_BOTTOM: 3
+  SUN_BOTTOM: 3,
+  SKILLS_BOTTOM: 4
 };
 
 const Profile = () => {
@@ -46,15 +43,16 @@ const Profile = () => {
     HERO_SIZE,
     JUMP,
     CASTLE_HEIGHT,
-    SUN_BOTTOM
-  } = useMedia((width, height) => {
+    SUN_BOTTOM,
+    SKILLS_BOTTOM
+  } = useMedia((_, height) => {
     if (height < 400) {
-      return SMALL;
+      return { ...GRID_SIZES_SMALL, ...SMALL };
     }
-    return LARGE;
+    return { ...GRID_SIZES_LARGE, ...LARGE };
   });
 
-  const [skillsBottom, setSkillsBottom] = useState(GROUND_HEIGHT + JUMP);
+  const [isJumping, setIsJumping] = useState(false);
   const [showPopin, setShowPopin] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
@@ -83,29 +81,25 @@ const Profile = () => {
 
   const onJump = (p: number) => {
     if (p === PROFILE_LEFT) {
-      setTimeout(() => setSkillsBottom(GROUND_HEIGHT + JUMP + 1), 100);
+      setTimeout(() => setIsJumping(true), 100);
       setTimeout(() => {
-        setSkillsBottom(GROUND_HEIGHT + JUMP);
+        setIsJumping(false);
         openModal();
       }, 300);
     }
   };
 
-  const onResize = () => setSkillsBottom(GROUND_HEIGHT + JUMP);
-
   return (
     <>
-      {/* Game elements */}
       <GameEngine
         isActive={isActive}
         groundHeight={GROUND_HEIGHT}
         jumpHeight={JUMP}
-        elementWidth={ELEMENT_WIDTH}
+        elementWidth={GRID_ELEMENT_WIDTH}
         maxRightOffset={GRID_WIDTH}
         initPosition={initPosition}
         onJump={onJump}
         onTop={onTop}
-        onResize={onResize}
       >
         {({
           canJump,
@@ -122,7 +116,7 @@ const Profile = () => {
           <Grid
             width="100vw"
             height={window.innerHeight + "px"}
-            elementWidth={`${ELEMENT_WIDTH}px`}
+            elementWidth={`${GRID_ELEMENT_WIDTH}px`}
             nbLines={GRID_HEIGHT}
             style={{
               backgroundImage: "linear-gradient(170deg,#c3efff 0%,#cdfaff 95%)"
@@ -196,7 +190,7 @@ const Profile = () => {
             <GridElement
               id="skills"
               left={firstPlanLeft + PROFILE_LEFT}
-              bottom={skillsBottom}
+              bottom={SKILLS_BOTTOM + (isJumping ? 1 : 0)}
               zIndex={3}
             >
               <Case onClick={openModal}>Profile</Case>

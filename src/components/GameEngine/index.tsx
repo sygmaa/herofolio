@@ -62,8 +62,8 @@ const calculateOffsets = (
 
   if (position) {
     if (maxRightOffset - position <= screenSize) {
-      newHeroLeft = screenSize - Math.max(0, maxRightOffset - 2 - position);
-      newFirstPlanLeft = -(maxRightOffset - screenSize - 2);
+      newHeroLeft = screenSize - Math.max(0, maxRightOffset - 4 - position);
+      newFirstPlanLeft = -(maxRightOffset - screenSize - 4);
     } else {
       if (position > centerPosition) {
         newFirstPlanLeft = -position + centerPosition;
@@ -237,10 +237,10 @@ const GameEngine = ({
 
   // Call onTop callback
   useEffect(() => {
-    if (top && isActive && onTop) {
+    if ((top || touchTop) && isActive && onTop) {
       onTop(positionInTheGrid);
     }
-  }, [top]);
+  }, [top, touchTop]);
 
   // On ground height change, recalculate the hero position
   useEffect(() => {
@@ -282,14 +282,13 @@ const GameEngine = ({
               setTimeout(() => setTouchSpace(false), 300);
             }
           }}
-          onArrowUpChange={v => setTouchTop(v)}
+          onArrowUpChange={v => {
+            console.log("1", 1);
+            setTouchTop(v);
+          }}
           onArrowLeftChange={v => setTouchLeft(v)}
-          onArrowRightChange={v => {
-            setTouchRight(v);
-          }}
-          onArrowDownChange={v => {
-            setTouchBottom(v);
-          }}
+          onArrowRightChange={v => setTouchRight(v)}
+          onArrowDownChange={v => setTouchBottom(v)}
         />
       )}
     </>
