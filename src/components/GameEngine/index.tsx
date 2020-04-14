@@ -14,6 +14,7 @@ interface ChildrenParams {
   secondPlanLeft: number;
   thirdPlanLeft: number;
   fourthPlanLeft: number;
+  fithPlanLeft: number;
   heroBottom: number;
   isWalking: boolean;
   canJump: boolean;
@@ -23,6 +24,9 @@ interface ChildrenParams {
   space: boolean;
   Grid: typeof Grid;
   GridElement: typeof GridElement;
+  isTouchDevice: boolean;
+  centerPosition: number;
+  screenSize: number;
 }
 
 interface GameEngineProps {
@@ -36,12 +40,14 @@ interface GameEngineProps {
   onJump?: (position: number) => any;
   onTop?: (position: number) => any;
   onResize?: () => any;
+  onMove?: (direction: "left" | "right", position: number) => any;
 }
 
 const FIRST_PLAN_STEP = 1;
-const SECOND_PLAN_STEP = 0.3;
-const THIRD_PLAN_STEP = 0.2;
-const FOURTH_PLAN_STEP = 0.1;
+const SECOND_PLAN_STEP = 0.4;
+const THIRD_PLAN_STEP = 0.3;
+const FOURTH_PLAN_STEP = 0.2;
+const FITH_PLAN_STEP = 0.05;
 
 /**
  * Calculate offset of hero and landscape
@@ -87,7 +93,8 @@ const GameEngine = ({
   elementWidth,
   maxRightOffset,
   isActive,
-  initPosition
+  initPosition,
+  onMove,
 }: GameEngineProps) => {
   const { width, height } = useSizes();
 
@@ -110,7 +117,7 @@ const GameEngine = ({
   const [touchLeft, setTouchLeft] = useState(false);
   const [touchRight, setTouchRight] = useState(false);
   const [touchBottom, setTouchBottom] = useState(false);
-  const [showCommands, setShowCommands] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   const top = useKeyPress(["ArrowUp", "z"]);
   const left = useKeyPress(["ArrowLeft", "q"]);
@@ -129,7 +136,13 @@ const GameEngine = ({
    * Handle the right move
    */
   const rightHandler = () => {
-    if ((!right && !touchRight) || left) return;
+    if ((!right && !touchRight) || left) {
+      return;
+    }
+
+    if (onMove) {
+      onMove("right", positionInTheGrid);
+    }
 
     if (heroLeft >= centerPosition) {
       if (canGoToRight) {
@@ -146,7 +159,13 @@ const GameEngine = ({
    * Handle the left move
    */
   const leftHandler = () => {
-    if ((!left && !touchLeft) || right) return;
+    if ((!left && !touchLeft) || right) {
+      return;
+    }
+
+    if (onMove) {
+      onMove("left", positionInTheGrid);
+    }
 
     if (heroLeft > centerPosition || heroLeft < centerPosition) {
       if (heroLeft > 1) {
@@ -231,7 +250,7 @@ const GameEngine = ({
   // Show commands on mobile only
   useEffect(() => {
     if ("ontouchstart" in document.documentElement) {
-      setShowCommands(true);
+      setIsTouchDevice(true);
     }
   }, []);
 
@@ -263,6 +282,7 @@ const GameEngine = ({
         secondPlanLeft: firstPlanLeft * SECOND_PLAN_STEP,
         thirdPlanLeft: firstPlanLeft * THIRD_PLAN_STEP,
         fourthPlanLeft: firstPlanLeft * FOURTH_PLAN_STEP,
+        fithPlanLeft: firstPlanLeft * FITH_PLAN_STEP,
         heroBottom,
         isWalking,
         canJump,
@@ -270,25 +290,28 @@ const GameEngine = ({
         top: top || touchTop,
         space: space || touchSpace,
         bottom: bottom || touchBottom,
+        isTouchDevice,
         Grid,
-        GridElement
+        GridElement,
+        screenSize,
+        centerPosition,
       })}
 
-      {showCommands && (
+      {isTouchDevice && (
         <Commands
-          onSpaceChange={v => {
+          onSpaceChange={(v) => {
             if (v) {
               setTouchSpace(true);
               setTimeout(() => setTouchSpace(false), 300);
             }
           }}
-          onArrowUpChange={v => {
+          onArrowUpChange={(v) => {
             console.log("1", 1);
             setTouchTop(v);
           }}
-          onArrowLeftChange={v => setTouchLeft(v)}
-          onArrowRightChange={v => setTouchRight(v)}
-          onArrowDownChange={v => setTouchBottom(v)}
+          onArrowLeftChange={(v) => setTouchLeft(v)}
+          onArrowRightChange={(v) => setTouchRight(v)}
+          onArrowDownChange={(v) => setTouchBottom(v)}
         />
       )}
     </>

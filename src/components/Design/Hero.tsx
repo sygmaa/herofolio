@@ -68,6 +68,11 @@ export const Hero = styled.div<HeroProps>`
   transition: all 0.2s linear;
   background: ${hat}, ${head}, ${body};
 
+  @media screen and (max-height: 600px) {
+    transform: scale(0.8);
+    transform-origin: bottom;
+  }
+
   &:before {
     content: " ";
     position: absolute;

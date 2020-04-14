@@ -7,6 +7,11 @@ export const CaseSquare = styled(BrickBg)`
   height: 50px;
   border-radius: 5px;
   color: #fff;
+
+  @media screen and (max-height: 600px) {
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 const Position = styled.div`

@@ -2,6 +2,22 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 import useQuery from "../../hooks/useQuery";
+import useMedia from "../../hooks/useMedia";
+
+import {
+  GRID_ELEMENT_WIDTH,
+  GRID_SIZES_LARGE,
+  GRID_SIZES_SMALL,
+} from "../../constants";
+import {
+  ModalRight,
+  ModalContent,
+  Title,
+  Presents,
+  Subtitle,
+  CommandsHelper,
+  MainTitle,
+} from "./styles";
 
 import GameEngine from "../../components/GameEngine";
 import { Ground } from "../../components/Design/Ground";
@@ -13,27 +29,24 @@ import { Cloud } from "../../components/Design/Cloud";
 import Modal from "../../components/Modal";
 import Castle from "../../components/Design/Castle";
 import { Door } from "../../components/Design/Door";
-import { ModalRight, ModalContent } from "./styles";
-import useMedia from "../../hooks/useMedia";
-import {
-  GRID_ELEMENT_WIDTH,
-  GRID_SIZES_LARGE,
-  GRID_SIZES_SMALL
-} from "../../constants";
 
 // constants
-export const CASTLE_LEFT = 40;
-export const GRID_WIDTH = 60;
-export const PROFILE_LEFT = 20;
-export const SMALL = {
-  CASTLE_HEIGHT: 7,
-  SUN_BOTTOM: 2,
-  SKILLS_BOTTOM: 3
-};
-export const LARGE = {
-  CASTLE_HEIGHT: 6,
-  SUN_BOTTOM: 3,
-  SKILLS_BOTTOM: 4
+export const CASTLE_LEFT = 50;
+export const GRID_WIDTH = 70;
+export const PROFILE_LEFT = 30;
+export const HEIGHT_OFFSET = {
+  SMALL: {
+    CASTLE_HEIGHT: 7,
+    SUN_BOTTOM: 1,
+    SUN_LEFT: 1,
+    SKILLS_BOTTOM: 3,
+  },
+  LARGE: {
+    CASTLE_HEIGHT: 6,
+    SUN_BOTTOM: 3,
+    SUN_LEFT: 4,
+    SKILLS_BOTTOM: 5,
+  },
 };
 
 const Profile = () => {
@@ -44,22 +57,24 @@ const Profile = () => {
     JUMP,
     CASTLE_HEIGHT,
     SUN_BOTTOM,
-    SKILLS_BOTTOM
-  } = useMedia((_, height) => {
-    if (height < 400) {
-      return { ...GRID_SIZES_SMALL, ...SMALL };
-    }
-    return { ...GRID_SIZES_LARGE, ...LARGE };
-  });
-
-  const [isJumping, setIsJumping] = useState(false);
-  const [showPopin, setShowPopin] = useState(false);
-  const [isActive, setIsActive] = useState(true);
+    SUN_LEFT,
+    SKILLS_BOTTOM,
+  } = useMedia((_, height) =>
+    height < 600
+      ? { ...GRID_SIZES_SMALL, ...HEIGHT_OFFSET.SMALL }
+      : { ...GRID_SIZES_LARGE, ...HEIGHT_OFFSET.LARGE }
+  );
 
   const query = useQuery();
   const history = useHistory();
 
   const initPosition = Number.parseInt(query.get("heroPosition") || "0") || 0;
+
+  const [isJumping, setIsJumping] = useState(false);
+  const [showPopin, setShowPopin] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const [hasJump, setHasJump] = useState(initPosition ? true : false);
+  const [hasMove, setHasMove] = useState(initPosition ? true : false);
 
   const closeModal = () => {
     setShowPopin(false);
@@ -80,6 +95,8 @@ const Profile = () => {
   };
 
   const onJump = (p: number) => {
+    setHasJump(true);
+
     if (p === PROFILE_LEFT) {
       setTimeout(() => setIsJumping(true), 100);
       setTimeout(() => {
@@ -88,6 +105,8 @@ const Profile = () => {
       }, 300);
     }
   };
+
+  const onMove = () => setHasMove(true);
 
   return (
     <>
@@ -100,6 +119,7 @@ const Profile = () => {
         initPosition={initPosition}
         onJump={onJump}
         onTop={onTop}
+        onMove={onMove}
       >
         {({
           canJump,
@@ -110,8 +130,11 @@ const Profile = () => {
           secondPlanLeft,
           thirdPlanLeft,
           fourthPlanLeft,
+          fithPlanLeft,
+          isTouchDevice,
           Grid,
-          GridElement
+          GridElement: Element,
+          centerPosition,
         }) => (
           <Grid
             width="100vw"
@@ -119,84 +142,95 @@ const Profile = () => {
             elementWidth={`${GRID_ELEMENT_WIDTH}px`}
             nbLines={GRID_HEIGHT}
             style={{
-              backgroundImage: "linear-gradient(170deg,#c3efff 0%,#cdfaff 95%)"
+              backgroundImage: "linear-gradient(170deg,#c3efff 0%,#cdfaff 95%)",
             }}
           >
-            <GridElement
-              id="cloud1"
-              top={2}
-              left={2 + fourthPlanLeft}
-              width={3}
+            {/* ------------------------ TITLE ------------------------- */}
+
+            <Element
+              id="title"
+              left={firstPlanLeft + centerPosition - 3}
+              width={8}
+              bottom={GROUND_HEIGHT}
+              zIndex={9}
               height={2}
-              zIndex={1}
             >
-              <Cloud color="#fff" />
-            </GridElement>
+              <Title>
+                <MainTitle>
+                  Kevin <span>Dumont</span>
+                </MainTitle>
+                <Presents>presents</Presents>
+                <Subtitle>Herofolio</Subtitle>
+              </Title>
+            </Element>
 
-            <GridElement
-              id="cloud2"
-              top={3}
-              left={9 + fourthPlanLeft}
-              width={3}
-              height={2}
-              zIndex={1}
+            {/* ------------------------ INSTRUCTIONS ------------------------- */}
+
+            <Element
+              id="instructions"
+              left={centerPosition - 2}
+              bottom={0}
+              zIndex={11}
+              width={6}
+              height={GROUND_HEIGHT}
             >
-              <Cloud color="#fff" />
-            </GridElement>
+              {(!hasJump || !hasMove) && (
+                <>
+                  {!isTouchDevice && (
+                    <CommandsHelper>
+                      Use your keyboard arrows to move and space to jump !
+                    </CommandsHelper>
+                  )}
 
-            <GridElement
-              id="cloud3"
-              top={1}
-              left={17 + fourthPlanLeft}
-              width={3}
-              height={2}
-              zIndex={1}
-            >
-              <Cloud color="#fff" />
-            </GridElement>
+                  {isTouchDevice && (
+                    <CommandsHelper>
+                      Use the commands on the right to move and jump !
+                    </CommandsHelper>
+                  )}
+                </>
+              )}
+            </Element>
 
-            <GridElement
-              id="cloud4"
-              top={2}
-              left={25 + fourthPlanLeft}
-              width={3}
-              height={2}
-              zIndex={1}
-            >
-              <Cloud color="#fff" />
-            </GridElement>
+            {/* ------------------------ CASE ------------------------- */}
 
-            <GridElement
-              id="cloud5"
-              top={1}
-              left={35 + fourthPlanLeft}
-              width={3}
-              height={2}
-              zIndex={1}
-            >
-              <Cloud color="#fff" />
-            </GridElement>
-
-            <GridElement
-              id="sun"
-              left={6}
-              bottom={SUN_BOTTOM}
-              width={3}
-              height={3}
-            >
-              <Sun />
-            </GridElement>
-
-            <GridElement
+            <Element
               id="skills"
               left={firstPlanLeft + PROFILE_LEFT}
               bottom={SKILLS_BOTTOM + (isJumping ? 1 : 0)}
               zIndex={3}
             >
               <Case onClick={openModal}>Profile</Case>
-            </GridElement>
+            </Element>
 
-            <GridElement
+            {/* ------------------------ CASTLE ------------------------- */}
+
+            <Element
+              id="door"
+              left={firstPlanLeft + CASTLE_LEFT + 1}
+              bottom={GROUND_HEIGHT}
+              width={3}
+              height={3}
+              zIndex={4}
+            >
+              <Door />
+            </Element>
+
+            <Element
+              id="castle"
+              left={firstPlanLeft + CASTLE_LEFT}
+              height={CASTLE_HEIGHT}
+              zIndex={3}
+              bottom={GROUND_HEIGHT}
+              width={5}
+            >
+              <Castle />
+            </Element>
+
+            {/* ------------------------ ALL LANDSCAPE AND COMMONS ------------------------- */}
+
+            {/* ------------------------ HERO ------------------------- */}
+
+            <Element
               id="hero"
               bottom={heroBottom}
               left={heroLeft}
@@ -207,11 +241,13 @@ const Profile = () => {
                 isWalking={isWalking && canJump}
                 isJumping={heroBottom !== GROUND_HEIGHT}
               />
-            </GridElement>
+            </Element>
 
-            <GridElement
+            {/* ------------------------ MOUTAINS ------------------------- */}
+
+            <Element
               id="moutains"
-              left={secondPlanLeft - 8}
+              left={fourthPlanLeft}
               height={4}
               zIndex={1}
               bottom={GROUND_HEIGHT}
@@ -224,9 +260,9 @@ const Profile = () => {
                 mountainHeight={15}
                 background="#b4e4eb"
               />
-            </GridElement>
+            </Element>
 
-            <GridElement
+            <Element
               id="moutains2"
               left={thirdPlanLeft}
               height={3}
@@ -241,39 +277,88 @@ const Profile = () => {
                 mountainHeight={15}
                 background="#a5ccd0"
               />
-            </GridElement>
+            </Element>
 
-            <GridElement
-              id="door"
-              left={firstPlanLeft + CASTLE_LEFT + 1}
-              bottom={GROUND_HEIGHT}
+            {/* ------------------------ CLOUDS ------------------------- */}
+            <Element
+              id="cloud1"
+              top={2}
+              left={1 + fourthPlanLeft}
+              width={3}
+              height={2}
+              zIndex={1}
+            >
+              <Cloud color="#fff" />
+            </Element>
+
+            <Element
+              id="cloud2"
+              top={3}
+              left={9 + fourthPlanLeft}
+              width={3}
+              height={2}
+              zIndex={1}
+            >
+              <Cloud color="#fff" />
+            </Element>
+
+            <Element
+              id="cloud3"
+              top={1}
+              left={17 + fourthPlanLeft}
+              width={3}
+              height={2}
+              zIndex={1}
+            >
+              <Cloud color="#fff" />
+            </Element>
+
+            <Element
+              id="cloud4"
+              top={2}
+              left={25 + fourthPlanLeft}
+              width={3}
+              height={2}
+              zIndex={1}
+            >
+              <Cloud color="#fff" />
+            </Element>
+
+            <Element
+              id="cloud5"
+              top={1}
+              left={35 + fourthPlanLeft}
+              width={3}
+              height={2}
+              zIndex={1}
+            >
+              <Cloud color="#fff" />
+            </Element>
+
+            {/* ------------------------ SUN ------------------------- */}
+
+            <Element
+              id="sun"
+              left={fithPlanLeft + SUN_LEFT}
+              bottom={SUN_BOTTOM}
               width={3}
               height={3}
-              zIndex={3}
             >
-              <Door />
-            </GridElement>
-            <GridElement
-              id="castle"
-              left={firstPlanLeft + CASTLE_LEFT}
-              height={CASTLE_HEIGHT}
-              zIndex={2}
-              bottom={GROUND_HEIGHT}
-              width={5}
-            >
-              <Castle />
-            </GridElement>
+              <Sun />
+            </Element>
 
-            <GridElement
+            {/* ------------------------ GROUND ------------------------- */}
+
+            <Element
               id="ground"
               left={firstPlanLeft}
               bottom={0}
               width={GRID_WIDTH}
               height={GROUND_HEIGHT}
-              zIndex={2}
+              zIndex={10}
             >
               <Ground grassColor="#4ba446" groundColor="#896443" />
-            </GridElement>
+            </Element>
           </Grid>
         )}
       </GameEngine>

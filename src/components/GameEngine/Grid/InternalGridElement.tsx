@@ -28,7 +28,7 @@ const GridElementStyle = styled.div.attrs(
     gridWidth: width,
     gridHeight: height,
     right,
-    left
+    left,
   }: GridElementStyleProps) => ({
     style: {
       zIndex,
@@ -39,8 +39,8 @@ const GridElementStyle = styled.div.attrs(
       top,
       right,
       left: 0,
-      transform: `translateX(${left})`
-    }
+      transform: `translateX(${left})`,
+    },
   })
 )<GridElementStyleProps>`
   position: absolute;

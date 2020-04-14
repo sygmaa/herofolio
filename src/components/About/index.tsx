@@ -24,6 +24,8 @@ export const AboutButton = styled.button`
   bottom: 15px;
 
   ${MEDIA.MAX_S} {
+    bottom: inherit;
+    top: 15px;
     padding: 10px 15px 10px 15px;
   }
 
@@ -32,7 +34,7 @@ export const AboutButton = styled.button`
   }
 
   p {
-    font-family: "Montserrat", sans-serif;
+    font-family: "PT Mono", sans-serif;
     margin-left: 7px;
     line-height: 22px;
 
@@ -106,7 +108,7 @@ const About = () => {
         <Modal
           onClose={() => setShowPopin(false)}
           style={{
-            maxHeight: "400px"
+            maxHeight: "400px",
           }}
         >
           <Header />
