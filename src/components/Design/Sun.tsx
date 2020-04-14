@@ -13,7 +13,7 @@ export const Sun = styled.div`
     #ffd600 28%,
     rgba(255, 214, 0, 0.4) 28.5%,
     rgba(255, 214, 0, 0.4) 50%,
-    transparent 50.5%
+    rgba(255, 214, 0, 0) 50.5%
   );
 
   @media screen and (max-height: 600px) {
