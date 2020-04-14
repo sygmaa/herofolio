@@ -20,18 +20,8 @@ export const ModalBg = styled.div`
 export const Container = styled.div`
   width: 500px;
   max-width: 100%;
-  animation: fadeDown 0.3s;
   padding: 15px;
   box-sizing: border-box;
-
-  @keyframes fadeDown {
-    from {
-      margin-top: -10%;
-    }
-    to {
-      margin-top: 0;
-    }
-  }
 `;
 
 export const CloseUi = styled(Close)`
