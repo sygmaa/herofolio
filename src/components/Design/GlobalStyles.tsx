@@ -8,7 +8,7 @@ export default createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    font-family: 'PT Mono', monospace;
+    font-family: 'Open Sans', sans-serif;
     font-size: 1.6rem;
     min-width: 300px;
     user-select: none;

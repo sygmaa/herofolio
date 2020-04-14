@@ -26,7 +26,7 @@ const CloseIcon = styled.i<CloseIconWithColorsProps>`
   &:after {
     content: " ";
     position: absolute;
-    background-color: ${({ color }) => color || "#333"};
+    background-color: ${({ color }) => color || "#306f8a"};
     top: 0;
     right: 0;
     left: 0;

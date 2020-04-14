@@ -7,6 +7,9 @@ import useSizes from "../../hooks/useSizes";
 import Grid from "./Grid";
 import GridElement from "./Grid/GridElement";
 import Commands from "./Commands";
+import Modal from "../Modal";
+import Flex from "../Flex";
+import { PhoneRotate } from "./style";
 
 interface ChildrenParams {
   heroLeft: number;
@@ -27,6 +30,8 @@ interface ChildrenParams {
   isTouchDevice: boolean;
   centerPosition: number;
   screenSize: number;
+  width: number;
+  height: number;
 }
 
 interface GameEngineProps {
@@ -118,6 +123,7 @@ const GameEngine = ({
   const [touchRight, setTouchRight] = useState(false);
   const [touchBottom, setTouchBottom] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const top = useKeyPress(["ArrowUp", "z"]);
   const left = useKeyPress(["ArrowLeft", "q"]);
@@ -225,8 +231,11 @@ const GameEngine = ({
       currentPositionInGrid
     );
 
+    setIsLoading(true);
     setHeroLeft(newHeroLeft);
     setFirstPlanLeft(newFirstPlanLeft);
+
+    setTimeout(() => setIsLoading(false), 1000);
 
     if (onResize) {
       onResize();
@@ -295,7 +304,36 @@ const GameEngine = ({
         GridElement,
         screenSize,
         centerPosition,
+        height,
+        width,
       })}
+
+      {isLoading && (
+        <Modal>
+          {({ Container }) => (
+            <Container>
+              <Flex direction="column" align="center" justify="center">
+                <p style={{ marginTop: 20, textAlign: "center" }}>Loading...</p>
+              </Flex>
+            </Container>
+          )}
+        </Modal>
+      )}
+
+      {isTouchDevice && width < height && (
+        <Modal>
+          {({ Container }) => (
+            <Container>
+              <Flex direction="column" align="center" justify="center">
+                <PhoneRotate aria-label="phone" />
+                <p style={{ marginTop: 20, textAlign: "center" }}>
+                  For better experience, please rotate your phone.
+                </p>
+              </Flex>
+            </Container>
+          )}
+        </Modal>
+      )}
 
       {isTouchDevice && (
         <Commands

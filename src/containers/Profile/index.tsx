@@ -11,7 +11,6 @@ import {
 } from "../../constants";
 import {
   ModalRight,
-  ModalContent,
   Title,
   Presents,
   Subtitle,
@@ -59,7 +58,7 @@ const Profile = () => {
     CASTLE_HEIGHT,
     SUN_BOTTOM,
     SUN_LEFT,
-    SKILLS_BOTTOM,
+    SKILLS_BOTTOM: PROFILE_BOTTOM,
   } = useMedia((_, height) =>
     height < 600
       ? { ...GRID_SIZES_SMALL, ...HEIGHT_OFFSET.SMALL }
@@ -110,33 +109,35 @@ const Profile = () => {
   const onMove = () => setHasMove(true);
 
   return (
-    <>
-      <GameEngine
-        isActive={isActive}
-        groundHeight={GROUND_HEIGHT}
-        jumpHeight={JUMP}
-        elementWidth={GRID_ELEMENT_WIDTH}
-        maxRightOffset={GRID_WIDTH}
-        initPosition={initPosition}
-        onJump={onJump}
-        onTop={onTop}
-        onMove={onMove}
-      >
-        {({
-          canJump,
-          heroBottom,
-          heroLeft,
-          isWalking,
-          firstPlanLeft,
-          secondPlanLeft,
-          thirdPlanLeft,
-          fourthPlanLeft,
-          fithPlanLeft,
-          isTouchDevice,
-          Grid,
-          GridElement: Element,
-          centerPosition,
-        }) => (
+    <GameEngine
+      isActive={isActive}
+      groundHeight={GROUND_HEIGHT}
+      jumpHeight={JUMP}
+      elementWidth={GRID_ELEMENT_WIDTH}
+      maxRightOffset={GRID_WIDTH}
+      initPosition={initPosition}
+      onJump={onJump}
+      onTop={onTop}
+      onMove={onMove}
+    >
+      {({
+        canJump,
+        heroBottom,
+        heroLeft,
+        isWalking,
+        firstPlanLeft,
+        secondPlanLeft,
+        thirdPlanLeft,
+        fourthPlanLeft,
+        fithPlanLeft,
+        isTouchDevice,
+        Grid,
+        GridElement: Element,
+        centerPosition,
+        width,
+        height,
+      }) => (
+        <>
           <Grid
             width="100vw"
             height={window.innerHeight + "px"}
@@ -146,7 +147,7 @@ const Profile = () => {
               background: "#79d4ff",
             }}
           >
-            {/* ------------------------ TITLE ------------------------- */}
+            {/* -- TITLE -- */}
 
             <Element
               id="title"
@@ -165,7 +166,7 @@ const Profile = () => {
               </Title>
             </Element>
 
-            {/* ------------------------ INSTRUCTIONS ------------------------- */}
+            {/* -- INSTRUCTIONS -- */}
 
             <Element
               id="instructions"
@@ -179,31 +180,31 @@ const Profile = () => {
                 <>
                   {!isTouchDevice && (
                     <CommandsHelper>
-                      Use your keyboard arrows to move and space to jump !
+                      Use your keyboard arrows to move and space to jump!
                     </CommandsHelper>
                   )}
 
                   {isTouchDevice && (
                     <CommandsHelper>
-                      Use the commands on the right to move and jump !
+                      Use the commands on the right to move and jump!
                     </CommandsHelper>
                   )}
                 </>
               )}
             </Element>
 
-            {/* ------------------------ CASE ------------------------- */}
+            {/* -- CASE -- */}
 
             <Element
               id="skills"
               left={firstPlanLeft + PROFILE_LEFT}
-              bottom={SKILLS_BOTTOM + (isJumping ? 1 : 0)}
+              bottom={PROFILE_BOTTOM + (isJumping ? 1 : 0)}
               zIndex={4}
             >
               <Case onClick={openModal}>Profile</Case>
             </Element>
 
-            {/* ------------------------ CASTLE ------------------------- */}
+            {/* -- CASTLE -- */}
 
             <Element
               id="door"
@@ -227,9 +228,9 @@ const Profile = () => {
               <Castle />
             </Element>
 
-            {/* ------------------------ ALL LANDSCAPE AND COMMONS ------------------------- */}
+            {/* -- ALL LANDSCAPE AND COMMONS -- */}
 
-            {/* ------------------------ HERO ------------------------- */}
+            {/* -- HERO -- */}
 
             <Element
               id="hero"
@@ -244,7 +245,7 @@ const Profile = () => {
               />
             </Element>
 
-            {/* ------------------------ MOUTAINS ------------------------- */}
+            {/* -- MOUTAINS -- */}
 
             <Element
               id="forest"
@@ -274,7 +275,7 @@ const Profile = () => {
               />
             </Element>
 
-            {/* ------------------------ CLOUDS ------------------------- */}
+            {/* -- CLOUDS -- */}
             <Element
               id="cloud1"
               top={2}
@@ -330,7 +331,7 @@ const Profile = () => {
               <Cloud color="#fff" />
             </Element>
 
-            {/* ------------------------ SUN ------------------------- */}
+            {/* -- SUN -- */}
 
             <Element
               id="sun"
@@ -342,7 +343,7 @@ const Profile = () => {
               <Sun />
             </Element>
 
-            {/* ------------------------ GROUND ------------------------- */}
+            {/* -- GROUND -- */}
 
             <Element
               id="ground"
@@ -355,30 +356,36 @@ const Profile = () => {
               <Ground grassColor="#4ba446" groundColor="#896443" />
             </Element>
           </Grid>
-        )}
-      </GameEngine>
 
-      {showPopin && (
-        <Modal onClose={closeModal}>
-          <ModalContent>
-            <ModalRight>
-              <h2>
-                I'm <strong>Kévin Dumont</strong>, a web artisan
-              </h2>
-              <p>
-                I'm creative. I create websites in their entirety. Design,
-                development, deployment. So, we can say I'm a full stack
-                developer. I love challenges. I'm a real passionate. I'm 100%
-                self-taught, I'm interested by the back-end web development
-                since I was 14. Today, I prefer the front-end development
-                because it's more sophisticated. I am still learning new
-                technologies to stay up to date and improve my knowledge.
-              </p>
-            </ModalRight>
-          </ModalContent>
-        </Modal>
+          {showPopin && (
+            <Modal>
+              {({ CloseButton, Container }) => (
+                <>
+                  <CloseButton onClick={closeModal} size={4} />
+                  <Container>
+                    <ModalRight>
+                      <h2>
+                        I'm <strong>Kévin Dumont</strong>, a web artisan
+                      </h2>
+                      <p>
+                        I'm creative. I create websites in their entirety.
+                        Design, development, deployment. So, we can say I'm a
+                        full stack developer. I love challenges. I'm a real
+                        passionate. I'm 100% self-taught, I'm interested by the
+                        back-end web development since I was 14. Today, I prefer
+                        the front-end development because it's more
+                        sophisticated. I am still learning new technologies to
+                        stay up to date and improve my knowledge.
+                      </p>
+                    </ModalRight>
+                  </Container>
+                </>
+              )}
+            </Modal>
+          )}
+        </>
       )}
-    </>
+    </GameEngine>
   );
 };
 

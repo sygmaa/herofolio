@@ -41,8 +41,9 @@ const commandsHelperAnimate = keyframes`
 `;
 
 export const CommandsHelper = styled.div`
+  font-family: "PT Mono", monospace;
   color: #fff;
-  text-shadow: ${get3dTextShadow("#333", 3)};
+  text-shadow: ${get3dTextShadow("#58402a", 2)};
   animation: infinite 0.7s ease ${commandsHelperAnimate};
   transform-origin: center;
   text-align: center;

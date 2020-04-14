@@ -21,13 +21,17 @@ const Position = styled.div`
 `;
 
 const Text = styled.div`
+  font-family: "PT Mono", monospace;
   position: absolute;
   margin-top: -2.2rem;
   color: #b42e25;
   text-shadow: 0px 1px 0px #fff;
   font-size: 1.6rem;
   font-weight: bold;
-  margin-left: -0.3rem;
+  margin-left: 25px;
+  width: 1px;
+  display: flex;
+  justify-content: center;
 `;
 
 export interface CaseProps {
