@@ -82,7 +82,7 @@ export const Presents = styled.div`
   right: 30px;
   font-size: 20px;
   color: #fff;
-  text-shadow: ${get3dTextShadow("#999", 5)};
+  text-shadow: ${get3dTextShadow("#AAA", 3)};
 
   ${MEDIA.MAX_S} {
     height: 144px;

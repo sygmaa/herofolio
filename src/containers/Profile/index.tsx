@@ -29,6 +29,7 @@ import { Cloud } from "../../components/Design/Cloud";
 import Modal from "../../components/Modal";
 import Castle from "../../components/Design/Castle";
 import { Door } from "../../components/Design/Door";
+import { Forest } from "../../components/Design/Forest";
 
 // constants
 export const CASTLE_LEFT = 50;
@@ -37,7 +38,7 @@ export const PROFILE_LEFT = 30;
 export const HEIGHT_OFFSET = {
   SMALL: {
     CASTLE_HEIGHT: 7,
-    SUN_BOTTOM: 1,
+    SUN_BOTTOM: 2,
     SUN_LEFT: 1,
     SKILLS_BOTTOM: 3,
   },
@@ -142,7 +143,7 @@ const Profile = () => {
             elementWidth={`${GRID_ELEMENT_WIDTH}px`}
             nbLines={GRID_HEIGHT}
             style={{
-              backgroundImage: "linear-gradient(170deg,#c3efff 0%,#cdfaff 95%)",
+              background: "#79d4ff",
             }}
           >
             {/* ------------------------ TITLE ------------------------- */}
@@ -197,7 +198,7 @@ const Profile = () => {
               id="skills"
               left={firstPlanLeft + PROFILE_LEFT}
               bottom={SKILLS_BOTTOM + (isJumping ? 1 : 0)}
-              zIndex={3}
+              zIndex={4}
             >
               <Case onClick={openModal}>Profile</Case>
             </Element>
@@ -210,7 +211,7 @@ const Profile = () => {
               bottom={GROUND_HEIGHT}
               width={3}
               height={3}
-              zIndex={4}
+              zIndex={5}
             >
               <Door />
             </Element>
@@ -219,7 +220,7 @@ const Profile = () => {
               id="castle"
               left={firstPlanLeft + CASTLE_LEFT}
               height={CASTLE_HEIGHT}
-              zIndex={3}
+              zIndex={4}
               bottom={GROUND_HEIGHT}
               width={5}
             >
@@ -246,10 +247,21 @@ const Profile = () => {
             {/* ------------------------ MOUTAINS ------------------------- */}
 
             <Element
-              id="moutains"
-              left={fourthPlanLeft}
+              id="forest"
+              left={secondPlanLeft}
               height={4}
-              zIndex={1}
+              zIndex={3}
+              bottom={GROUND_HEIGHT}
+              width={GRID_WIDTH + 8}
+            >
+              <Forest />
+            </Element>
+
+            <Element
+              id="moutains"
+              left={thirdPlanLeft}
+              height={4}
+              zIndex={2}
               bottom={GROUND_HEIGHT}
               width={GRID_WIDTH + 8}
             >
@@ -258,24 +270,7 @@ const Profile = () => {
                 percent={65}
                 moutainWidth={5}
                 mountainHeight={15}
-                background="#b4e4eb"
-              />
-            </Element>
-
-            <Element
-              id="moutains2"
-              left={thirdPlanLeft}
-              height={3}
-              zIndex={2}
-              bottom={GROUND_HEIGHT}
-              width={GRID_WIDTH}
-            >
-              <Mountains
-                angle={165}
-                percent={65}
-                moutainWidth={5}
-                mountainHeight={15}
-                background="#a5ccd0"
+                background="#6bbce2"
               />
             </Element>
 
