@@ -232,11 +232,8 @@ const GameEngine = ({
       currentPositionInGrid
     );
 
-    setIsLoading(true);
     setHeroLeft(newHeroLeft);
     setFirstPlanLeft(newFirstPlanLeft);
-
-    setTimeout(() => setIsLoading(false), 1000);
 
     if (onResize) {
       onResize();
@@ -282,7 +279,16 @@ const GameEngine = ({
   }, [space, touchSpace]);
 
   // Recalculate offset when user is resizing the window
-  useEffect(handleScreenResize, [width, height]);
+  useEffect(() => {
+    handleScreenResize();
+
+    setIsLoading(true);
+    const timeout = setTimeout(() => setIsLoading(false), 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [width, height]);
 
   return (
     <>

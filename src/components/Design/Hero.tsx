@@ -3,40 +3,41 @@ import styled, { css, keyframes } from "styled-components";
 const camel = "#e5c56c";
 const shoes = "#7c5e5e";
 const beige = "#ffe1af";
+const gray = "#808080";
 
 const hat = `
-  radial-gradient(7px 7px at calc(50% + 33px) 22px, gray 49%, transparent 50%) no-repeat,
-  linear-gradient(29deg, gray 60%, transparent 62%) calc(50% + 20px) 5px / 27px 20px no-repeat,
-  radial-gradient(50px 50px at calc(50% - 5px) 25px, grey 49%, transparent 50%) 0px 0px / 100% 25px no-repeat
+  radial-gradient(7px 7px at calc(50% + 33px) 22px, ${gray} 49%, ${gray}00 50%) no-repeat,
+  linear-gradient(29deg, ${gray} 60%, ${gray}00 62%) calc(50% + 20px) 5px / 27px 20px no-repeat,
+  radial-gradient(50px 50px at calc(50% - 5px) 25px, ${gray} 49%, ${gray}00 50%) 0px 0px / 100% 25px no-repeat
 `;
 
 const head = `
-  radial-gradient(8px 8px at 50% 38px, ${beige} 50%, transparent 50%) -8px,
-  radial-gradient(8px 8px at 50% 38px, ${beige} 50%, transparent 50%) 8px,
-  radial-gradient(10px 10px at 50% 35px, black 50%, transparent 50%) -8px,
-  radial-gradient(10px 10px at 50% 35px, black 50%, transparent 50%) 8px,
+  radial-gradient(8px 8px at 50% 38px, ${beige} 49%, ${beige}00 50%) -8px,
+  radial-gradient(8px 8px at 50% 38px, ${beige} 49%, ${beige}00 50%) 8px,
+  radial-gradient(10px 10px at 50% 35px, black 48%, #00000000 50%) -8px,
+  radial-gradient(10px 10px at 50% 35px, black 48%, #00000000 50%) 8px,
   linear-gradient(to bottom, ${beige} 100%, ${beige} 100%) 50% 10px / 30px 34px no-repeat,
-  radial-gradient(30px 30px at 50% 42px, white 50%, transparent 50%),
-  radial-gradient(50px 50px at 50% 38px, ${beige} 50%, transparent 50%),
-  linear-gradient(black 49%, black 50%) 50% 22px / 52px 18px no-repeat
+  radial-gradient(30px 30px at 50% 42px, white 49%, #ffffff00 50%),
+  radial-gradient(50px 50px at 50% 38px, ${beige} 48%, ${beige}00 50%),
+  linear-gradient(black 48%, black 50%) 50% 22px / 52px 18px no-repeat
 `;
 
 const body = `
-  radial-gradient(50px 60px at 50% 30px, ${camel} 50%, transparent 50%) 0 60px / 100% no-repeat
+  radial-gradient(50px 60px at 50% 30px, ${camel} 49%, ${camel}00 50%) 0 60px / 100% no-repeat
 `;
 
 const unanimatedHandsAndFeet = `
-  radial-gradient(30px 30px at calc(50% - 15px) calc(50% + 15px), ${shoes} 50%, transparent 50%),
-  radial-gradient(30px 30px at calc(50% + 15px) calc(50% + 15px), ${shoes} 50%, transparent 50%),
-  radial-gradient(20px 20px at calc(50% - 40px) calc(50% + 15px), ${beige} 50%, transparent 50%),
-  radial-gradient(20px 20px at calc(50% + 40px) calc(50% + 15px), ${beige} 50%, transparent 50%)
+  radial-gradient(30px 30px at calc(50% - 15px) calc(50% + 15px), ${shoes} 49%, ${shoes}00 50%),
+  radial-gradient(30px 30px at calc(50% + 15px) calc(50% + 15px), ${shoes} 49%, ${shoes}00 50%),
+  radial-gradient(20px 20px at calc(50% - 40px) calc(50% + 15px), ${beige} 49%, ${beige}00 50%),
+  radial-gradient(20px 20px at calc(50% + 40px) calc(50% + 15px), ${beige} 49%, ${beige}00 50%)
 `;
 
 const jumpingHandsAndFeet = `
-  radial-gradient(30px 30px at calc(50% + 10px) calc(50%), ${shoes} 50%, transparent 50%) calc(50% + 30px) 110px / 30px 30px no-repeat,
-  radial-gradient(30px 30px at calc(50% - 10px) calc(50%), ${shoes} 50%, transparent 50%) calc(50% - 30px) 110px / 30px 30px no-repeat,
-  radial-gradient(20px 20px at calc(50% - 40px) calc(50% - 20px), ${beige} 50%, transparent 50%),
-  radial-gradient(20px 20px at calc(50% + 40px) calc(50% - 20px), ${beige} 50%, transparent 50%)
+  radial-gradient(30px 30px at calc(50% + 10px) calc(50%), ${shoes} 49%, ${shoes}00 50%) calc(50% + 30px) 110px / 30px 30px no-repeat,
+  radial-gradient(30px 30px at calc(50% - 10px) calc(50%), ${shoes} 49%, ${shoes}00 50%) calc(50% - 30px) 110px / 30px 30px no-repeat,
+  radial-gradient(20px 20px at calc(50% - 40px) calc(50% - 20px), ${beige} 49%, ${beige}00 50%),
+  radial-gradient(20px 20px at calc(50% + 40px) calc(50% - 20px), ${beige} 49%, ${beige}00 50%)
 `;
 
 const walk = keyframes`

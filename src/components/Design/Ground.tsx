@@ -18,18 +18,18 @@ const dotsValues = [
   { left: 80, top: 70 },
   { left: 85, top: 30 },
   { left: 90, top: 40 },
-  { left: 95, top: 70 }
+  { left: 95, top: 70 },
 ];
 
 const dots = dotsValues
-  .map(v => {
+  .map((v) => {
     return `radial-gradient(4px 4px at ${v.left}% ${v.top}%, rgba(0,0,0,0.2) 46%, transparent 50%) repeat-x`;
   })
   .join(",");
 
 const grass = (color: string) => `
-  linear-gradient(30deg, transparent 50%, ${color} 50%) 0 0 / 20px 30px repeat-x,
-  linear-gradient(-30deg, transparent 50%, ${color} 50%) 0 0 / 20px 30px repeat-x
+  linear-gradient(30deg, ${color}00 49%, ${color} 50%) 0 0 / 20px 30px repeat-x,
+  linear-gradient(-30deg, ${color}00 49%, ${color} 50%) 0 0 / 20px 30px repeat-x
 `;
 
 export interface GroundProps {

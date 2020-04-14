@@ -284,7 +284,7 @@ const Profile = () => {
               height={2}
               zIndex={1}
             >
-              <Cloud color="#fff" />
+              <Cloud />
             </Element>
 
             <Element
@@ -295,7 +295,7 @@ const Profile = () => {
               height={2}
               zIndex={1}
             >
-              <Cloud color="#fff" />
+              <Cloud />
             </Element>
 
             <Element
@@ -306,7 +306,7 @@ const Profile = () => {
               height={2}
               zIndex={1}
             >
-              <Cloud color="#fff" />
+              <Cloud />
             </Element>
 
             <Element
@@ -317,7 +317,7 @@ const Profile = () => {
               height={2}
               zIndex={1}
             >
-              <Cloud color="#fff" />
+              <Cloud />
             </Element>
 
             <Element
@@ -328,7 +328,7 @@ const Profile = () => {
               height={2}
               zIndex={1}
             >
-              <Cloud color="#fff" />
+              <Cloud />
             </Element>
 
             {/* -- SUN -- */}

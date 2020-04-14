@@ -16,17 +16,17 @@ export const Mountains = styled.div<MountainProps>`
     percent,
     moutainWidth,
     mountainHeight,
-    background: color
+    background: color,
   }) => {
     const w = moutainWidth ? `${moutainWidth}%` : 0;
     const h = mountainHeight ? `${mountainHeight}%` : 0;
-    const pMore = percent + 1;
+    const pMore = percent + 0.2;
 
     return `
-    linear-gradient(-${angle}deg,transparent ${percent}%, ${color} ${percent}%) ${w} 0 / ${h} 100% repeat-x,
-    linear-gradient(${angle}deg,transparent ${percent}%, ${color} ${percent}%) ${w} 0 / ${h} 100% repeat-x,
-    linear-gradient(-${angle}deg,transparent ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} 100% repeat-x,
-    linear-gradient(${angle}deg,transparent ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} 100% repeat-x
+    linear-gradient(-${angle}deg, ${color}00 ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} 100% repeat-x,
+    linear-gradient(${angle}deg, ${color}00 ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} 100% repeat-x,
+    linear-gradient(-${angle}deg, ${color}00 ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} 100% repeat-x,
+    linear-gradient(${angle}deg, ${color}00 ${percent}%, ${color} ${pMore}%) ${w} 0 / ${h} 100% repeat-x
   `;
   }};
 `;
