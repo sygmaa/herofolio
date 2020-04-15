@@ -29,11 +29,13 @@ import Modal from "../../components/Modal";
 import Castle from "../../components/Design/Castle";
 import { Door } from "../../components/Design/Door";
 import { Forest } from "../../components/Design/Forest";
+import { Tree, Flower, Bamboos } from "../../components/Design/Vegetation";
 
 // constants
-export const CASTLE_LEFT = 50;
-export const GRID_WIDTH = 70;
+export const CASTLE_LEFT = 40;
+export const GRID_WIDTH = 90;
 export const PROFILE_LEFT = 30;
+export const LANDSCAPE_CHANGE = 45;
 export const HEIGHT_OFFSET = {
   SMALL: {
     CASTLE_HEIGHT: 7,
@@ -134,8 +136,7 @@ const Profile = () => {
         Grid,
         GridElement: Element,
         centerPosition,
-        width,
-        height,
+        positionInTheGrid,
       }) => (
         <>
           <Grid
@@ -144,7 +145,9 @@ const Profile = () => {
             elementWidth={`${GRID_ELEMENT_WIDTH}px`}
             nbLines={GRID_HEIGHT}
             style={{
-              background: "#79d4ff",
+              background:
+                positionInTheGrid < LANDSCAPE_CHANGE ? "#79d4ff" : "#ffcde2",
+              transition: "background 2s ease",
             }}
           >
             {/* -- TITLE -- */}
@@ -158,6 +161,36 @@ const Profile = () => {
               height={2}
             >
               <Title>
+                <Flower
+                  zIndex={0}
+                  bottom={20}
+                  color="#ffffff"
+                  rodColor={"#4ca446"}
+                  left={-25}
+                />
+                <Flower zIndex={0} bottom={50} color="#fd4f5e" left={30} />
+                <Flower zIndex={-1} bottom={120} color="#ce3744" left={120} />
+                <Flower
+                  zIndex={0}
+                  bottom={70}
+                  color="#ffffff"
+                  right={40}
+                  rodColor={"#4ca446"}
+                />
+                <Flower
+                  zIndex={0}
+                  bottom={20}
+                  color="#ffffff"
+                  rodColor={"#4ca446"}
+                  left={-25}
+                />
+                <Flower
+                  zIndex={1}
+                  bottom={0}
+                  color="#ce3744"
+                  right={-20}
+                  rodColor={"#4ca446"}
+                />
                 <MainTitle>
                   Kevin <span>Dumont</span>
                 </MainTitle>
@@ -196,10 +229,10 @@ const Profile = () => {
             {/* -- CASE -- */}
 
             <Element
-              id="skills"
+              id="profile"
               left={firstPlanLeft + PROFILE_LEFT}
               bottom={PROFILE_BOTTOM + (isJumping ? 1 : 0)}
-              zIndex={4}
+              zIndex={6}
             >
               <Case onClick={openModal}>Profile</Case>
             </Element>
@@ -212,7 +245,7 @@ const Profile = () => {
               bottom={GROUND_HEIGHT}
               width={3}
               height={3}
-              zIndex={5}
+              zIndex={7}
             >
               <Door />
             </Element>
@@ -221,11 +254,12 @@ const Profile = () => {
               id="castle"
               left={firstPlanLeft + CASTLE_LEFT}
               height={CASTLE_HEIGHT}
-              zIndex={4}
+              zIndex={6}
               bottom={GROUND_HEIGHT}
               width={5}
             >
               <Castle />
+              <Bamboos right={-30} zIndex={-1} scale={0.8} rotate={2} />
             </Element>
 
             {/* -- ALL LANDSCAPE AND COMMONS -- */}
@@ -245,22 +279,68 @@ const Profile = () => {
               />
             </Element>
 
-            {/* -- MOUTAINS -- */}
+            {/* -- TREES -- */}
+
+            <Element
+              id="treesSecond"
+              left={secondPlanLeft}
+              width={GRID_WIDTH}
+              bottom={GROUND_HEIGHT}
+              zIndex={4}
+              height={2}
+            >
+              <Tree scale={0.5} rotate={1} left={100} pale={true} />
+              <Tree scale={0.6} rotate={0} left={350} pale={true} />
+              <Tree scale={0.6} rotate={0} left={950} pale={true} />
+              <Tree scale={0.5} rotate={2} left={1200} pale={true} />
+              <Bamboos left={1500} zIndex={-1} scale={0.6} rotate={-1} />
+              <Bamboos left={1520} zIndex={-1} scale={0.6} rotate={1} />
+              <Bamboos left={1800} zIndex={-1} scale={0.3} rotate={-1} />
+              <Bamboos left={1820} zIndex={-1} scale={0.3} rotate={0} />
+              <Bamboos left={2050} zIndex={-1} scale={0.5} rotate={-1} />
+              <Bamboos left={2070} zIndex={-1} scale={0.5} rotate={0} />
+              <Bamboos left={2300} zIndex={-1} scale={0.4} rotate={0} />
+              <Bamboos left={2320} zIndex={-1} scale={0.4} rotate={2} />
+            </Element>
+
+            <Element
+              id="trees"
+              left={firstPlanLeft + 7}
+              width={GRID_WIDTH}
+              bottom={GROUND_HEIGHT}
+              zIndex={4}
+              height={2}
+            >
+              <Tree scale={0.9} rotate={0} left={1100} />
+              <Tree scale={1} rotate={-1} left={1700} />
+              <Bamboos left={2000} zIndex={-1} scale={0.8} rotate={2} />
+              <Bamboos left={2300} zIndex={-1} scale={0.9} rotate={1} />
+              <Bamboos left={2650} zIndex={-1} scale={0.9} rotate={1} />
+            </Element>
 
             <Element
               id="forest"
-              left={secondPlanLeft}
+              left={thirdPlanLeft}
               height={4}
               zIndex={3}
               bottom={GROUND_HEIGHT}
               width={GRID_WIDTH + 8}
             >
               <Forest />
+              <Forest
+                color={"#8ebd43"}
+                style={{
+                  opacity: positionInTheGrid < LANDSCAPE_CHANGE ? 0 : 1,
+                  transition: "all 2s ease",
+                }}
+              />
             </Element>
+
+            {/* -- MOUTAINS -- */}
 
             <Element
               id="moutains"
-              left={thirdPlanLeft}
+              left={fourthPlanLeft}
               height={4}
               zIndex={2}
               bottom={GROUND_HEIGHT}
@@ -271,7 +351,18 @@ const Profile = () => {
                 percent={65}
                 moutainWidth={5}
                 mountainHeight={15}
-                background="#6bbce2"
+                background={"#9e8791"}
+                style={{
+                  opacity: positionInTheGrid < LANDSCAPE_CHANGE ? 0 : 1,
+                  position: "absolute",
+                }}
+              />
+              <Mountains
+                angle={165}
+                percent={65}
+                moutainWidth={5}
+                mountainHeight={15}
+                background={"#6bbce2"}
               />
             </Element>
 
@@ -279,7 +370,7 @@ const Profile = () => {
             <Element
               id="cloud1"
               top={2}
-              left={1 + fourthPlanLeft}
+              left={1 + fithPlanLeft}
               width={3}
               height={2}
               zIndex={1}
@@ -290,7 +381,7 @@ const Profile = () => {
             <Element
               id="cloud2"
               top={3}
-              left={9 + fourthPlanLeft}
+              left={9 + fithPlanLeft}
               width={3}
               height={2}
               zIndex={1}
@@ -301,7 +392,7 @@ const Profile = () => {
             <Element
               id="cloud3"
               top={1}
-              left={17 + fourthPlanLeft}
+              left={17 + fithPlanLeft}
               width={3}
               height={2}
               zIndex={1}
@@ -312,7 +403,7 @@ const Profile = () => {
             <Element
               id="cloud4"
               top={2}
-              left={25 + fourthPlanLeft}
+              left={25 + fithPlanLeft}
               width={3}
               height={2}
               zIndex={1}
@@ -323,7 +414,7 @@ const Profile = () => {
             <Element
               id="cloud5"
               top={1}
-              left={35 + fourthPlanLeft}
+              left={35 + fithPlanLeft}
               width={3}
               height={2}
               zIndex={1}
@@ -335,12 +426,16 @@ const Profile = () => {
 
             <Element
               id="sun"
-              left={fithPlanLeft + SUN_LEFT}
+              left={SUN_LEFT}
               bottom={SUN_BOTTOM}
               width={3}
               height={3}
             >
-              <Sun />
+              <Sun
+                color={
+                  positionInTheGrid > LANDSCAPE_CHANGE ? "#ffffcc" : undefined
+                }
+              />
             </Element>
 
             {/* -- GROUND -- */}
@@ -353,7 +448,15 @@ const Profile = () => {
               height={GROUND_HEIGHT}
               zIndex={10}
             >
-              <Ground grassColor="#4ba446" groundColor="#896443" />
+              <Ground
+                grassColor={"#b1ec54"}
+                groundColor={"#b8a48c"}
+                style={{
+                  opacity: positionInTheGrid < LANDSCAPE_CHANGE ? 0 : 1,
+                  position: "absolute",
+                }}
+              />
+              <Ground grassColor={"#4ba446"} groundColor={"#896443"} />
             </Element>
           </Grid>
 

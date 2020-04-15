@@ -66,7 +66,3 @@ export const Loader = styled.div`
     animation: 0.8s ${walk} linear infinite;
   }
 `;
-
-export const LoaderText = styled.div`
-  margin-top: 140px;
-`;

@@ -10,7 +10,7 @@ import Commands from "./Commands";
 import Modal from "../Modal";
 import Flex from "../Flex";
 import { PhoneRotate, PhoneRotateText } from "./styles";
-import { Loader, LoaderText } from "../Design/Loader";
+import { Loader } from "../Design/Loader";
 
 interface ChildrenParams {
   heroLeft: number;
@@ -324,7 +324,6 @@ const GameEngine = ({
             <Container>
               <Flex direction="column" align="center" justify="center">
                 <Loader />
-                <LoaderText>Wait for it... Wait for it...</LoaderText>
               </Flex>
             </Container>
           )}

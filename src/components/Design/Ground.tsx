@@ -42,4 +42,5 @@ export const Ground = styled.div<GroundProps>`
     `${grass(grassColor)}, ${dots}, ${groundColor}`};
   width: 100%;
   height: 100%;
+  transition: all 2s ease;
 `;
