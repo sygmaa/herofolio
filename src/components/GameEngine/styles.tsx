@@ -32,3 +32,8 @@ export const PhoneRotate = styled.div`
   border-radius: 5px;
   animation: infinite ${phoneAnimation} 1.8s ease;
 `;
+
+export const PhoneRotateText = styled.div`
+  margin-top: 20px;
+  text-align: center;
+`;

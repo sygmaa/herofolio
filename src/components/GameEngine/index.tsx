@@ -9,8 +9,8 @@ import GridElement from "./Grid/GridElement";
 import Commands from "./Commands";
 import Modal from "../Modal";
 import Flex from "../Flex";
-import { PhoneRotate } from "./styles";
-import { Loader } from "../Design/Loader";
+import { PhoneRotate, PhoneRotateText } from "./styles";
+import { Loader, LoaderText } from "../Design/Loader";
 
 interface ChildrenParams {
   heroLeft: number;
@@ -125,6 +125,7 @@ const GameEngine = ({
   const [touchBottom, setTouchBottom] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [loaderTimeout, setLoaderTimeout] = useState<any>(null);
 
   const top = useKeyPress(["ArrowUp", "z"]);
   const left = useKeyPress(["ArrowLeft", "q"]);
@@ -234,6 +235,13 @@ const GameEngine = ({
 
     setHeroLeft(newHeroLeft);
     setFirstPlanLeft(newFirstPlanLeft);
+    setIsLoading(true);
+
+    if (loaderTimeout) {
+      clearTimeout(loaderTimeout);
+    }
+
+    setLoaderTimeout(setTimeout(() => setIsLoading(false), 1500));
 
     if (onResize) {
       onResize();
@@ -259,6 +267,10 @@ const GameEngine = ({
     if ("ontouchstart" in document.documentElement) {
       setIsTouchDevice(true);
     }
+
+    return () => {
+      clearTimeout(loaderTimeout);
+    };
   }, []);
 
   // Call onTop callback
@@ -279,16 +291,7 @@ const GameEngine = ({
   }, [space, touchSpace]);
 
   // Recalculate offset when user is resizing the window
-  useEffect(() => {
-    handleScreenResize();
-
-    setIsLoading(true);
-    const timeout = setTimeout(() => setIsLoading(false), 1000);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [width, height]);
+  useEffect(handleScreenResize, [width, height]);
 
   return (
     <>
@@ -321,6 +324,7 @@ const GameEngine = ({
             <Container>
               <Flex direction="column" align="center" justify="center">
                 <Loader />
+                <LoaderText>Wait for it... Wait for it...</LoaderText>
               </Flex>
             </Container>
           )}
@@ -333,9 +337,9 @@ const GameEngine = ({
             <Container>
               <Flex direction="column" align="center" justify="center">
                 <PhoneRotate aria-label="phone" />
-                <p style={{ marginTop: 20, textAlign: "center" }}>
+                <PhoneRotateText>
                   For better experience, please rotate your phone.
-                </p>
+                </PhoneRotateText>
               </Flex>
             </Container>
           )}
@@ -350,10 +354,7 @@ const GameEngine = ({
               setTimeout(() => setTouchSpace(false), 300);
             }
           }}
-          onArrowUpChange={(v) => {
-            console.log("1", 1);
-            setTouchTop(v);
-          }}
+          onArrowUpChange={(v) => setTouchTop(v)}
           onArrowLeftChange={(v) => setTouchLeft(v)}
           onArrowRightChange={(v) => setTouchRight(v)}
           onArrowDownChange={(v) => setTouchBottom(v)}

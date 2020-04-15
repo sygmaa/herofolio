@@ -63,6 +63,10 @@ export const Loader = styled.div`
     background-position: 0 105px, 0 105px, 0 0, 0 0;
     background-size: 100% 60px, 100% 60px, 100% 100%, 100% 100%;
     background-repeat: no-repeat;
-    animation: 0.5s ${walk} linear infinite;
+    animation: 0.8s ${walk} linear infinite;
   }
+`;
+
+export const LoaderText = styled.div`
+  margin-top: 140px;
 `;

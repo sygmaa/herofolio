@@ -28,7 +28,7 @@ const About = () => {
                   <ul>
                     <li>
                       All illustrations (shapes, characters, icons,...) are PURE
-                      CSS. Absolutely zero image or SVG was used.
+                      CSS. Absolutely zero image, svg or font-icon was used.
                     </li>
                     <li>
                       Each illustration, taken seprately (for example, the
