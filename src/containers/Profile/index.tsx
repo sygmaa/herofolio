@@ -432,10 +432,13 @@ const Profile = () => {
               height={3}
             >
               <Sun
-                color={
-                  positionInTheGrid > LANDSCAPE_CHANGE ? "#ffffcc" : undefined
-                }
+                color={"#ffffcc"}
+                style={{
+                  opacity: positionInTheGrid > LANDSCAPE_CHANGE ? 1 : 0,
+                  position: "absolute",
+                }}
               />
+              <Sun />
             </Element>
 
             {/* -- GROUND -- */}

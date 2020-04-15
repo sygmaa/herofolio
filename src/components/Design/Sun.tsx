@@ -19,7 +19,7 @@ export const Sun = styled.div<SunProps>`
     rgba(255, 214, 0, 0.4) 50%,
     rgba(255, 214, 0, 0) 50.5%
   );
-  transition: background 2s ease;
+  transition: all 2s ease;
 
   @media screen and (max-height: 600px) {
     min-width: ${SIZE_SM};
