@@ -96,7 +96,7 @@ export const Hero = styled.div<HeroProps>`
       isWalking &&
       !isJumping &&
       css`
-        animation: 0.2s ${walk} linear infinite;
+        animation: 0.4s ${walk} linear infinite;
       `}
   }
 `;

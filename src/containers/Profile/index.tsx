@@ -30,6 +30,7 @@ import Castle from "../../components/Design/Castle";
 import { Door } from "../../components/Design/Door";
 import { Forest } from "../../components/Design/Forest";
 import { Tree, Flower, Bamboos } from "../../components/Design/Vegetation";
+import Coin from "../../components/Design/Coin";
 
 // constants
 export const CASTLE_LEFT = 40;
@@ -77,6 +78,7 @@ const Profile = () => {
   const [isActive, setIsActive] = useState(true);
   const [hasJump, setHasJump] = useState(initPosition ? true : false);
   const [hasMove, setHasMove] = useState(initPosition ? true : false);
+  const [coinsTaken, setCoinsTaken] = useState([false, false, false]);
 
   const closeModal = () => {
     setShowPopin(false);
@@ -192,7 +194,8 @@ const Profile = () => {
                   rodColor={"#4ca446"}
                 />
                 <MainTitle>
-                  Kevin <span>Dumont</span>
+                  Kevin
+                  <span>Dumont</span>
                 </MainTitle>
                 <Presents>presents</Presents>
                 <Subtitle>Herofolio</Subtitle>
@@ -224,6 +227,33 @@ const Profile = () => {
                   )}
                 </>
               )}
+            </Element>
+
+            {/* -- COINS -- */}
+
+            <Element
+              id="coin1"
+              left={firstPlanLeft + 25}
+              bottom={GROUND_HEIGHT}
+              zIndex={9}
+            >
+              <Coin />
+            </Element>
+            <Element
+              id="coin2"
+              left={firstPlanLeft + 28}
+              bottom={GROUND_HEIGHT}
+              zIndex={9}
+            >
+              <Coin />
+            </Element>
+            <Element
+              id="coin3"
+              left={firstPlanLeft + 31}
+              bottom={GROUND_HEIGHT}
+              zIndex={9}
+            >
+              <Coin />
             </Element>
 
             {/* -- CASE -- */}

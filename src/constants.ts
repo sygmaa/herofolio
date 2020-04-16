@@ -11,7 +11,7 @@ export const MEDIA = {
   MAX_S: "@media screen and (max-width: 768px)",
   MAX_M: "@media screen and (max-width: 1024px)",
   MAX_L: "@media screen and (max-width: 1280px)",
-  MAX_XL: "@media screen and (max-width: 1920px)"
+  MAX_XL: "@media screen and (max-width: 1920px)",
 };
 
 export const GRID_ELEMENT_WIDTH = 60;
@@ -20,12 +20,17 @@ export const GRID_SIZES_SMALL = {
   GRID_HEIGHT: 5,
   GROUND_HEIGHT: 1,
   HERO_SIZE: 1,
-  JUMP: 2
+  JUMP: 2,
 };
 
 export const GRID_SIZES_LARGE = {
   GRID_HEIGHT: 10,
   GROUND_HEIGHT: 2,
   HERO_SIZE: 3,
-  JUMP: 3
+  JUMP: 3,
+};
+
+export const FONTS = {
+  DEFAULT: "'Source Sans Pro', sans-serif",
+  MONO: "'PT Mono', monospace",
 };

@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 import { BrickBg } from "./BrickBg";
+import { FONTS } from "../../constants";
 
 export const CaseSquare = styled(BrickBg)`
   width: 50px;
@@ -21,7 +22,7 @@ const Position = styled.div`
 `;
 
 const Text = styled.div`
-  font-family: "PT Mono", monospace;
+  font-family: ${FONTS.MONO};
   position: absolute;
   margin-top: -2.2rem;
   color: #b42e25;

@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { MEDIA } from "../../constants";
+import { MEDIA, FONTS } from "../../constants";
 import { get3dTextShadow } from "../../services/helpers";
 
 export const ModalRight = styled.div`
@@ -41,7 +41,7 @@ const commandsHelperAnimate = keyframes`
 `;
 
 export const CommandsHelper = styled.div`
-  font-family: "PT Mono", monospace;
+  font-family: ${FONTS.MONO};
   color: #fff;
   text-shadow: ${get3dTextShadow("#58402a", 2)};
   animation: infinite 0.7s ease ${commandsHelperAnimate};
@@ -53,7 +53,7 @@ export const CommandsHelper = styled.div`
 `;
 
 export const MainTitle = styled.div`
-  font-size: 80px;
+  font-size: 86px;
   font-weight: 800;
   letter-spacing: -5px;
   color: #fd4f5e;
@@ -62,12 +62,13 @@ export const MainTitle = styled.div`
   text-align: center;
 
   ${MEDIA.MAX_S} {
-    font-size: 50px;
+    font-size: 56px;
     line-height: 40px;
   }
 
   span {
-    font-size: 90px;
+    font-size: 96px;
+    display: block;
 
     ${MEDIA.MAX_S} {
       font-size: 60px;
@@ -95,7 +96,7 @@ export const Presents = styled.div`
 export const Subtitle = styled.div`
   position: relative;
   z-index: 2;
-  font-size: 100px;
+  font-size: 106px;
   font-weight: 800;
   letter-spacing: -5px;
   color: #ffd600;
@@ -104,7 +105,7 @@ export const Subtitle = styled.div`
   text-align: center;
 
   ${MEDIA.MAX_S} {
-    font-size: 70px;
+    font-size: 76px;
     line-height: 40px;
   }
 `;
@@ -113,7 +114,7 @@ export const Title = styled.h1`
   width: 550px;
   height: 210px;
   position: absolute;
-  font-family: "Open Sans", sans-serif;
+  font-family: ${FONTS.DEFAULT};
   text-transform: uppercase;
   bottom: 0;
   margin: 0;

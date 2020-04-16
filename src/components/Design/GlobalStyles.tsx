@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+import { FONTS } from "../../constants";
 
 export default createGlobalStyle`
   html {
@@ -8,7 +9,7 @@ export default createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-    font-family: 'Open Sans', sans-serif;
+    font-family: ${FONTS.DEFAULT};
     font-size: 1.6rem;
     min-width: 300px;
     user-select: none;
@@ -26,7 +27,12 @@ export default createGlobalStyle`
 
   button {
     font-size: 1.6rem;
-    font-family: "PT Mono", monospace;
+    font-family: ${FONTS.MONO};
     cursor: pointer;
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: bold;
+    text-transform: uppercase;
   }
 `;
