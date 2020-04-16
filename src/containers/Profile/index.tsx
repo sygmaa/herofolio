@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 import useQuery from "../../hooks/useQuery";
@@ -18,7 +18,7 @@ import {
   MainTitle,
 } from "./styles";
 
-import GameEngine from "../../components/GameEngine";
+import GameEngine, { MoveParms } from "../../components/GameEngine";
 import { Ground } from "../../components/Design/Ground";
 import { Hero } from "../../components/Design/Hero";
 import { Sun } from "../../components/Design/Sun";
@@ -31,6 +31,7 @@ import { Door } from "../../components/Design/Door";
 import { Forest } from "../../components/Design/Forest";
 import { Tree, Flower, Bamboos } from "../../components/Design/Vegetation";
 import Coin from "../../components/Design/Coin";
+import GameContext from "../../contexts/GameContext";
 
 // constants
 export const CASTLE_LEFT = 40;
@@ -70,6 +71,7 @@ const Profile = () => {
 
   const query = useQuery();
   const history = useHistory();
+  const { coins, takeCoins } = useContext(GameContext);
 
   const initPosition = Number.parseInt(query.get("heroPosition") || "0") || 0;
 
@@ -78,7 +80,6 @@ const Profile = () => {
   const [isActive, setIsActive] = useState(true);
   const [hasJump, setHasJump] = useState(initPosition ? true : false);
   const [hasMove, setHasMove] = useState(initPosition ? true : false);
-  const [coinsTaken, setCoinsTaken] = useState([false, false, false]);
 
   const closeModal = () => {
     setShowPopin(false);
@@ -110,7 +111,21 @@ const Profile = () => {
     }
   };
 
-  const onMove = () => setHasMove(true);
+  const onMove = ({ position }: MoveParms) => {
+    setHasMove(true);
+
+    if (position + 1 === 25) {
+      takeCoins(0);
+    }
+
+    if (position + 1 === 28) {
+      takeCoins(1);
+    }
+
+    if (position + 1 === 31) {
+      takeCoins(2);
+    }
+  };
 
   return (
     <GameEngine
@@ -235,25 +250,25 @@ const Profile = () => {
               id="coin1"
               left={firstPlanLeft + 25}
               bottom={GROUND_HEIGHT}
-              zIndex={9}
+              zIndex={11}
             >
-              <Coin />
+              <Coin taken={coins[0]} />
             </Element>
             <Element
               id="coin2"
               left={firstPlanLeft + 28}
               bottom={GROUND_HEIGHT}
-              zIndex={9}
+              zIndex={11}
             >
-              <Coin />
+              <Coin taken={coins[1]} />
             </Element>
             <Element
               id="coin3"
               left={firstPlanLeft + 31}
               bottom={GROUND_HEIGHT}
-              zIndex={9}
+              zIndex={11}
             >
-              <Coin />
+              <Coin taken={coins[2]} />
             </Element>
 
             {/* -- CASE -- */}

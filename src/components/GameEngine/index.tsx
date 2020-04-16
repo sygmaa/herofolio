@@ -12,7 +12,7 @@ import Flex from "../Flex";
 import { PhoneRotate, PhoneRotateText } from "./styles";
 import { Loader } from "../Design/Loader";
 
-interface ChildrenParams {
+export interface ChildrenParams {
   heroLeft: number;
   firstPlanLeft: number;
   secondPlanLeft: number;
@@ -35,7 +35,12 @@ interface ChildrenParams {
   height: number;
 }
 
-interface GameEngineProps {
+export interface MoveParms {
+  direction: "left" | "right";
+  position: number;
+}
+
+export interface GameEngineProps {
   children: (params: ChildrenParams) => ReactNode | ReactNode[];
   groundHeight: number;
   jumpHeight: number;
@@ -46,7 +51,7 @@ interface GameEngineProps {
   onJump?: (position: number) => any;
   onTop?: (position: number) => any;
   onResize?: () => any;
-  onMove?: (direction: "left" | "right", position: number) => any;
+  onMove?: (params: MoveParms) => any;
 }
 
 const FIRST_PLAN_STEP = 1;
@@ -149,7 +154,7 @@ const GameEngine = ({
     }
 
     if (onMove) {
-      onMove("right", positionInTheGrid);
+      onMove({ direction: "right", position: positionInTheGrid });
     }
 
     if (heroLeft >= centerPosition) {
@@ -172,7 +177,7 @@ const GameEngine = ({
     }
 
     if (onMove) {
-      onMove("left", positionInTheGrid);
+      onMove({ direction: "left", position: positionInTheGrid });
     }
 
     if (heroLeft > centerPosition || heroLeft < centerPosition) {
