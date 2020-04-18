@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
-import useQuery from "../../hooks/useQuery";
 import useMedia from "../../hooks/useMedia";
 
 import {
@@ -26,27 +25,27 @@ import Case from "../../components/Design/Case";
 import { Mountains } from "../../components/Design/Moutains";
 import { Cloud } from "../../components/Design/Cloud";
 import Modal from "../../components/Modal";
-import Castle from "../../components/Design/Castle";
 import { Door } from "../../components/Design/Door";
 import { Forest } from "../../components/Design/Forest";
 import { Tree, Flower, Bamboos } from "../../components/Design/Vegetation";
 import Coin from "../../components/Design/Coin";
 import GameContext from "../../contexts/GameContext";
+import House from "../../components/Design/House";
 
 // constants
-export const CASTLE_LEFT = 40;
+export const HOUSE_LEFT = 40;
 export const GRID_WIDTH = 90;
 export const PROFILE_LEFT = 30;
 export const LANDSCAPE_CHANGE = 45;
 export const HEIGHT_OFFSET = {
   SMALL: {
-    CASTLE_HEIGHT: 7,
+    HOUSE_HEIGHT: 7,
     SUN_BOTTOM: 2,
     SUN_LEFT: 1,
     SKILLS_BOTTOM: 3,
   },
   LARGE: {
-    CASTLE_HEIGHT: 6,
+    HOUSE_HEIGHT: 6,
     SUN_BOTTOM: 3,
     SUN_LEFT: 4,
     SKILLS_BOTTOM: 5,
@@ -59,7 +58,7 @@ const Profile = () => {
     GROUND_HEIGHT,
     HERO_SIZE,
     JUMP,
-    CASTLE_HEIGHT,
+    HOUSE_HEIGHT,
     SUN_BOTTOM,
     SUN_LEFT,
     SKILLS_BOTTOM: PROFILE_BOTTOM,
@@ -69,17 +68,22 @@ const Profile = () => {
       : { ...GRID_SIZES_LARGE, ...HEIGHT_OFFSET.LARGE }
   );
 
-  const query = useQuery();
   const history = useHistory();
-  const { coins, takeCoins } = useContext(GameContext);
+  const {
+    coins,
+    takeCoins,
+    heroPositions: { profile },
+    move,
+    nbJump,
+    hasMove,
+    incrementJump,
+  } = useContext(GameContext);
 
-  const initPosition = Number.parseInt(query.get("heroPosition") || "0") || 0;
+  const initPosition = profile;
 
   const [isJumping, setIsJumping] = useState(false);
   const [showPopin, setShowPopin] = useState(false);
   const [isActive, setIsActive] = useState(true);
-  const [hasJump, setHasJump] = useState(initPosition ? true : false);
-  const [hasMove, setHasMove] = useState(initPosition ? true : false);
 
   const closeModal = () => {
     setShowPopin(false);
@@ -92,7 +96,7 @@ const Profile = () => {
   };
 
   const onTop = (p: number) => {
-    if (p === CASTLE_LEFT + 2) {
+    if (p === HOUSE_LEFT + 2) {
       setTimeout(() => {
         history.push("/skills");
       }, 200);
@@ -100,7 +104,7 @@ const Profile = () => {
   };
 
   const onJump = (p: number) => {
-    setHasJump(true);
+    incrementJump();
 
     if (p === PROFILE_LEFT) {
       setTimeout(() => setIsJumping(true), 100);
@@ -112,19 +116,17 @@ const Profile = () => {
   };
 
   const onMove = ({ position }: MoveParms) => {
-    setHasMove(true);
+    move("profile", position);
 
-    if (position + 1 === 25) {
-      takeCoins(0);
-    }
-
-    if (position + 1 === 28) {
-      takeCoins(1);
-    }
-
-    if (position + 1 === 31) {
-      takeCoins(2);
-    }
+    coins.forEach((coin, i) => {
+      if (
+        coin.location === "profile" &&
+        position === coin.position &&
+        !coin.taken
+      ) {
+        takeCoins(i);
+      }
+    });
   };
 
   return (
@@ -227,48 +229,34 @@ const Profile = () => {
               width={6}
               height={GROUND_HEIGHT}
             >
-              {(!hasJump || !hasMove) && (
-                <>
-                  {!isTouchDevice && (
-                    <CommandsHelper>
-                      Use your keyboard arrows to move and space to jump!
-                    </CommandsHelper>
-                  )}
-
-                  {isTouchDevice && (
-                    <CommandsHelper>
-                      Use the commands on the right to move and jump!
-                    </CommandsHelper>
-                  )}
-                </>
+              {(nbJump === 0 || !hasMove) && (
+                <CommandsHelper>
+                  {!isTouchDevice
+                    ? `Use your keyboard arrows to move and space to jump!`
+                    : `Use the commands on the right to move and jump!`}
+                </CommandsHelper>
               )}
             </Element>
 
             {/* -- COINS -- */}
 
             <Element
-              id="coin1"
-              left={firstPlanLeft + 25}
+              id="coins"
+              left={firstPlanLeft}
               bottom={GROUND_HEIGHT}
               zIndex={11}
             >
-              <Coin taken={coins[0]} />
-            </Element>
-            <Element
-              id="coin2"
-              left={firstPlanLeft + 28}
-              bottom={GROUND_HEIGHT}
-              zIndex={11}
-            >
-              <Coin taken={coins[1]} />
-            </Element>
-            <Element
-              id="coin3"
-              left={firstPlanLeft + 31}
-              bottom={GROUND_HEIGHT}
-              zIndex={11}
-            >
-              <Coin taken={coins[2]} />
+              {coins.map(
+                (coin) =>
+                  coin.location === "profile" && (
+                    <Coin
+                      key={`${coin.location + coin.position}`}
+                      taken={coin.taken}
+                      width={GRID_ELEMENT_WIDTH}
+                      left={coin.position}
+                    />
+                  )
+              )}
             </Element>
 
             {/* -- CASE -- */}
@@ -282,11 +270,11 @@ const Profile = () => {
               <Case onClick={openModal}>Profile</Case>
             </Element>
 
-            {/* -- CASTLE -- */}
+            {/* -- HOUSE -- */}
 
             <Element
               id="door"
-              left={firstPlanLeft + CASTLE_LEFT + 1}
+              left={firstPlanLeft + HOUSE_LEFT + 1}
               bottom={GROUND_HEIGHT}
               width={3}
               height={3}
@@ -296,14 +284,14 @@ const Profile = () => {
             </Element>
 
             <Element
-              id="castle"
-              left={firstPlanLeft + CASTLE_LEFT}
-              height={CASTLE_HEIGHT}
+              id="house"
+              left={firstPlanLeft + HOUSE_LEFT}
+              height={HOUSE_HEIGHT}
               zIndex={6}
               bottom={GROUND_HEIGHT}
               width={5}
             >
-              <Castle />
+              <House />
               <Bamboos right={-30} zIndex={-1} scale={0.8} rotate={2} />
             </Element>
 
@@ -359,7 +347,6 @@ const Profile = () => {
               <Tree scale={0.9} rotate={0} left={1100} />
               <Tree scale={1} rotate={-1} left={1700} />
               <Bamboos left={2000} zIndex={-1} scale={0.8} rotate={2} />
-              <Bamboos left={2300} zIndex={-1} scale={0.9} rotate={1} />
               <Bamboos left={2650} zIndex={-1} scale={0.9} rotate={1} />
             </Element>
 

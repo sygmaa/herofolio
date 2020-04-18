@@ -1,3 +1,5 @@
+import { Coin } from "./contexts/GameContext";
+
 export const MEDIA = {
   // MIN
   MIN_XS: "@media screen and (min-width: 481px)",
@@ -34,3 +36,21 @@ export const FONTS = {
   DEFAULT: "'Source Sans Pro', sans-serif",
   MONO: "'PT Mono', monospace",
 };
+
+export const COINS: Coin[] = [
+  {
+    location: "profile",
+    position: 25,
+    taken: false,
+  },
+  {
+    location: "profile",
+    position: 28,
+    taken: false,
+  },
+  {
+    location: "profile",
+    position: 31,
+    taken: false,
+  },
+];

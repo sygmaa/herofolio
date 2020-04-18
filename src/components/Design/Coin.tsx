@@ -2,7 +2,18 @@ import React from "react";
 import styled, { keyframes, css } from "styled-components";
 import { FadeOut } from "./FadeOut";
 
+interface WrapperProps {
+  width: number;
+  left: number;
+}
+
 export interface CoinProps {
+  taken: boolean;
+  left: number;
+  width: number;
+}
+
+export interface CoinUiProps {
   taken: boolean;
 }
 
@@ -10,7 +21,7 @@ const size = "40px";
 const fontSize = "28px";
 const width = "4px";
 const color = "#ffd600";
-const speed = "3s";
+const speed = "2s";
 const innerCoin = "#ceae0c";
 
 const rotate = keyframes`
@@ -27,11 +38,21 @@ const rotate = keyframes`
 
 const hideEffect = keyframes`
   100% {
-    transform: rotateY(720deg) translateY(-100px);
+    transform: rotateY(1080deg) translateY(-150px);
   }
 `;
 
-const CoinUi = styled.div<CoinProps>`
+const Wrapper = styled.div<WrapperProps>`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  bottom: 0;
+  top: 0;
+  width: ${(props) => props.width}px;
+  left: ${(props) => props.left}px;
+`;
+
+const CoinUi = styled.div<CoinUiProps>`
   font-size: ${fontSize};
   font-weight: bold;
   width: ${width};
@@ -49,7 +70,7 @@ const CoinUi = styled.div<CoinProps>`
   ${({ taken }) =>
     taken &&
     css`
-      animation: ${hideEffect} 1s ease;
+      animation: ${hideEffect} 4s ease;
     `}
 
   .side,
@@ -92,14 +113,17 @@ const CoinUi = styled.div<CoinProps>`
     transform: rotateY(-90deg);
   }
 `;
-const Coin = ({ taken }: CoinProps) => {
+
+const Coin = ({ taken, left, width }: CoinProps) => {
   return (
-    <FadeOut duration="1s" hide={taken}>
-      <CoinUi taken={taken}>
-        <div className="side heads">$</div>
-        <div className="side tails">$</div>
-      </CoinUi>
-    </FadeOut>
+    <Wrapper width={width} left={width * left}>
+      <FadeOut duration="2s" hide={taken}>
+        <CoinUi taken={taken}>
+          <div className="side heads">$</div>
+          <div className="side tails">$</div>
+        </CoinUi>
+      </FadeOut>
+    </Wrapper>
   );
 };
 

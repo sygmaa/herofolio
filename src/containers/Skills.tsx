@@ -5,12 +5,12 @@ import GameEngine from "../components/GameEngine";
 import { Hero } from "../components/Design/Hero";
 import { BrickBg } from "../components/Design/BrickBg";
 import { Door } from "../components/Design/Door";
-import { CASTLE_LEFT } from "./Profile";
+import { HOUSE_LEFT } from "./Profile";
 import useMedia from "../hooks/useMedia";
 import {
   GRID_ELEMENT_WIDTH,
   GRID_SIZES_SMALL,
-  GRID_SIZES_LARGE
+  GRID_SIZES_LARGE,
 } from "../constants";
 
 export const GRID_WIDTH = 70;
@@ -23,11 +23,11 @@ const Skills = () => {
     (_, height) => {
       if (height < 600) {
         return {
-          ...GRID_SIZES_SMALL
+          ...GRID_SIZES_SMALL,
         };
       }
       return {
-        ...GRID_SIZES_LARGE
+        ...GRID_SIZES_LARGE,
       };
     }
   );
@@ -35,7 +35,7 @@ const Skills = () => {
   const onTop = (p: number) => {
     if (p === 1) {
       setTimeout(() => {
-        history.push(`/?heroPosition=${CASTLE_LEFT + 2}`);
+        history.push(`/?heroPosition=${HOUSE_LEFT + 2}`);
       }, 200);
     }
   };
@@ -57,7 +57,7 @@ const Skills = () => {
         secondPlanLeft,
         heroLeft,
         Grid,
-        GridElement
+        GridElement,
       }) => (
         <Grid
           width="100vw"
@@ -65,7 +65,7 @@ const Skills = () => {
           elementWidth={`${GRID_ELEMENT_WIDTH}px`}
           nbLines={GRID_HEIGHT}
           style={{
-            backgroundImage: "linear-gradient(170deg,#c3efff 0%,#cdfaff 95%)"
+            backgroundImage: "linear-gradient(170deg,#c3efff 0%,#cdfaff 95%)",
           }}
         >
           <GridElement
@@ -106,7 +106,7 @@ const Skills = () => {
               color3="gray"
               style={{
                 width: "100%",
-                height: "100%"
+                height: "100%",
               }}
             />
           </GridElement>
@@ -124,7 +124,7 @@ const Skills = () => {
               color3="#3b3b3b"
               style={{
                 width: "100%",
-                height: "100%"
+                height: "100%",
               }}
             />
           </GridElement>

@@ -1,46 +1,53 @@
 import styled from "styled-components";
 
-const dotsValues = [
-  { left: 5, top: 30 },
-  { left: 10, top: 90 },
-  { left: 15, top: 50 },
-  { left: 20, top: 30 },
-  { left: 30, top: 40 },
-  { left: 35, top: 60 },
-  { left: 40, top: 40 },
-  { left: 45, top: 70 },
-  { left: 50, top: 50 },
-  { left: 55, top: 90 },
-  { left: 60, top: 60 },
-  { left: 65, top: 30 },
-  { left: 70, top: 40 },
-  { left: 75, top: 80 },
-  { left: 80, top: 70 },
-  { left: 85, top: 30 },
-  { left: 90, top: 40 },
-  { left: 95, top: 70 },
-];
-
-const dots = dotsValues
-  .map((v) => {
-    return `radial-gradient(4px 4px at ${v.left}% ${v.top}%, rgba(0,0,0,0.2) 46%, transparent 50%) repeat-x`;
-  })
-  .join(",");
+export interface GroundProps {
+  grassColor: string;
+  groundColor: string;
+  opacity?: number;
+}
 
 const grass = (color: string) => `
   linear-gradient(30deg, ${color}00 49%, ${color} 50%) 0 0 / 20px 30px repeat-x,
   linear-gradient(-30deg, ${color}00 49%, ${color} 50%) 0 0 / 20px 30px repeat-x
 `;
 
-export interface GroundProps {
-  grassColor: string;
-  groundColor: string;
-}
+const groundDarkness = `
+  linear-gradient(to top, #000000 49.8%, #00000000 50%),
+  linear-gradient(30deg, #000000 49.8%, #00000000 50%) 0 0 / 100px 100px repeat-x,
+  linear-gradient(-30deg, #000000 49.8%, #00000000 50%) 0 0 / 100px 100px repeat-x
+`;
 
 export const Ground = styled.div<GroundProps>`
   background: ${({ grassColor, groundColor }) =>
-    `${grass(grassColor)}, ${dots}, ${groundColor}`};
+    `${grass(grassColor)}, ${groundColor}`};
   width: 100%;
   height: 100%;
-  transition: all 2s ease;
+  transition: all 6s ease;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  opacity: ${({ opacity }) => (typeof opacity !== "undefined" ? opacity : 1)};
+
+  &:before,
+  &:after {
+    content: "";
+    display: block;
+    position: absolute;
+    height: 100%;
+    right: 0;
+    left: 0;
+    background: ${groundDarkness};
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  &:before {
+    bottom: -20%;
+  }
+
+  &:after {
+    bottom: -60%;
+  }
 `;

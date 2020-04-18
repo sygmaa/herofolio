@@ -6,27 +6,49 @@ import About from "./components/About";
 
 import GlobalStyles from "./components/Design/GlobalStyles";
 import Skills from "./containers/Skills";
-import GameContext from "./contexts/GameContext";
+import GameContext, {
+  initContext,
+  GameContextInterface,
+  Location,
+} from "./contexts/GameContext";
+import { COINS } from "./constants";
 
 interface AppProps {
   width: number;
 }
 
 const App = () => {
-  const initCoins = Array(6).fill(false);
+  const [coins, setCoins] = useState(COINS);
+  const [heroPositions, setHeroPositions] = useState(initContext.heroPositions);
+  const [nbJump, setNbJump] = useState(0);
+  const [hasMove, setHasMove] = useState(false);
 
-  const [coins, setCoins] = useState(initCoins);
-
-  const takeCoins = (index: number) => {
-    const newCoins = [...coins];
-    newCoins[index] = true;
-    setCoins(newCoins);
-  };
-
-  const gameContext = {
+  const gameContext: GameContextInterface = {
+    ...initContext,
     coins,
-    takeCoins,
     startTimestamp: Date.now(),
+    hasMove,
+    heroPositions,
+    nbJump,
+
+    takeCoins(index: number) {
+      const newCoins = [...coins];
+      newCoins[index] = { ...newCoins[index], taken: true };
+
+      setCoins(newCoins);
+    },
+
+    move(location: Location, position: number) {
+      setHeroPositions({
+        ...heroPositions,
+        [location]: position,
+      });
+      setHasMove(true);
+    },
+
+    incrementJump() {
+      setNbJump(nbJump + 1);
+    },
   };
 
   return (

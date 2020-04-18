@@ -41,7 +41,12 @@ const Castle = () => {
           left: "80%",
         }}
       />
-      <BrickBg color1="silver" color2="gray" color3="gray" style={{ width: "100%", marginTop: 30 }} />
+      <BrickBg
+        color1="silver"
+        color2="gray"
+        color3="gray"
+        style={{ width: "100%", marginTop: 30 }}
+      />
     </>
   );
 };

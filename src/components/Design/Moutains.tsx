@@ -6,12 +6,18 @@ export interface MountainProps {
   moutainWidth: number;
   mountainHeight: number;
   background: string;
+  opacity?: number;
 }
 
 export const Mountains = styled.div<MountainProps>`
-  width: 100%;
-  height: 100%;
-  transition: all 2s ease;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  transition: all 6s ease;
+  opacity: ${({ opacity }) => (typeof opacity !== "undefined" ? opacity : 1)};
+
   background: ${({
     angle,
     percent,

@@ -13,5 +13,6 @@ export const FadeOut = styled.div<FadeOut>`
     hide &&
     css`
       opacity: 0;
+      pointer-events: none;
     `}
 `;
