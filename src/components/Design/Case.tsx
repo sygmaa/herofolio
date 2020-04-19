@@ -1,7 +1,12 @@
 import React, { ReactNode } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { BrickBg } from "./BrickBg";
 import { FONTS } from "../../constants";
+
+interface PositionProps {
+  isJumping: boolean;
+  jumpHeight: number;
+}
 
 export const CaseSquare = styled(BrickBg)`
   width: 50px;
@@ -15,10 +20,16 @@ export const CaseSquare = styled(BrickBg)`
   }
 `;
 
-const Position = styled.div`
+const Position = styled.div<PositionProps>`
   text-align: center;
-  transition: bottom 0.2s ease;
+  transition: bottom 0.3s ease;
   cursor: pointer;
+
+  ${({ isJumping, jumpHeight }) =>
+    isJumping &&
+    css`
+      transform: translateY(-${jumpHeight}px);
+    `}
 `;
 
 const Text = styled.div`
@@ -37,14 +48,16 @@ const Text = styled.div`
 
 export interface CaseProps {
   children: ReactNode;
+  isJumping: boolean;
+  jumpHeight: number;
   onClick: () => any;
 }
 
-const Case = ({ children, onClick }: CaseProps) => {
+const Case = ({ children, onClick, isJumping, jumpHeight }: CaseProps) => {
   return (
-    <Position onClick={onClick}>
+    <Position onClick={onClick} jumpHeight={jumpHeight} isJumping={isJumping}>
       <Text>{children}</Text>
-      <CaseSquare></CaseSquare>
+      <CaseSquare />
     </Position>
   );
 };

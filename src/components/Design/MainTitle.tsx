@@ -48,7 +48,7 @@ export const Presents = styled.div`
 export const Subtitle = styled.div`
   position: relative;
   z-index: 2;
-  font-size: 106px;
+  font-size: 108px;
   font-weight: 800;
   letter-spacing: -5px;
   color: #ffd600;

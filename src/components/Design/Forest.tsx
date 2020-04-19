@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export interface ForestProps {
   color?: string;
+  opacity?: number;
 }
 
 const getBg = (c?: string) => {
@@ -22,4 +23,7 @@ export const Forest = styled.div<ForestProps>`
   position: absolute;
   bottom: 0;
   background: ${({ color }) => getBg(color)};
+  opacity: ${({ opacity }) => (typeof opacity !== "undefined" ? opacity : 1)};
+  transition: all 0.5s ease;
+  pointer-events: none;
 `;

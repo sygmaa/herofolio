@@ -18,11 +18,12 @@ const groundDarkness = `
 `;
 
 export const Ground = styled.div<GroundProps>`
+  pointer-events: none;
   background: ${({ grassColor, groundColor }) =>
     `${grass(grassColor)}, ${groundColor}`};
   width: 100%;
   height: 100%;
-  transition: all 6s ease;
+  transition: opacity 0.5s ease;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -40,7 +41,6 @@ export const Ground = styled.div<GroundProps>`
     left: 0;
     background: ${groundDarkness};
     opacity: 0.2;
-    pointer-events: none;
   }
 
   &:before {

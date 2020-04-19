@@ -4,12 +4,16 @@ import useKeyPress from "../../hooks/useKeyPress";
 import useInterval from "use-interval";
 import useSizes from "../../hooks/useSizes";
 
-import Grid from "./Grid";
-import GridElement from "./Grid/GridElement";
 import Commands from "./Commands";
 import Modal from "../Modal";
 import Flex from "../Flex";
-import { PhoneRotate, PhoneRotateText } from "./styles";
+import {
+  PhoneRotate,
+  PhoneRotateText,
+  GameContainer,
+  Plan,
+  GameElement,
+} from "./styles";
 import { Loader } from "../Design/Loader";
 
 export interface ChildrenParams {
@@ -19,20 +23,23 @@ export interface ChildrenParams {
   thirdPlanLeft: number;
   fourthPlanLeft: number;
   fithPlanLeft: number;
-  heroBottom: number;
+  isJumping: boolean;
   isWalking: boolean;
   canJump: boolean;
   positionInTheGrid: number;
   top: boolean;
   bottom: boolean;
   space: boolean;
-  Grid: typeof Grid;
-  GridElement: typeof GridElement;
   isTouchDevice: boolean;
   centerPosition: number;
   screenSize: number;
   width: number;
   height: number;
+  GameContainer: typeof GameContainer;
+  Plan: typeof Plan;
+  GameElement: typeof GameElement;
+  getX: (distance: number) => number;
+  getY: (distance: number) => number;
 }
 
 export interface MoveParms {
@@ -43,11 +50,11 @@ export interface MoveParms {
 export interface GameEngineProps {
   children: (params: ChildrenParams) => ReactNode | ReactNode[];
   groundHeight: number;
-  jumpHeight: number;
   elementWidth: number;
   maxRightOffset: number;
   isActive: boolean;
   initPosition?: number;
+  nbLines: number;
   onJump?: (position: number) => any;
   onTop?: (position: number) => any;
   onResize?: () => any;
@@ -100,12 +107,12 @@ const GameEngine = ({
   onResize,
   children,
   groundHeight,
-  jumpHeight,
   elementWidth,
   maxRightOffset,
   isActive,
   initPosition,
   onMove,
+  nbLines,
 }: GameEngineProps) => {
   const { width, height } = useSizes();
 
@@ -120,7 +127,7 @@ const GameEngine = ({
 
   const [heroLeft, setHeroLeft] = useState(initialHeroLeft);
   const [firstPlanLeft, setFirstPlanLeft] = useState(initialFirstPlanLeft);
-  const [heroBottom, setHeroBottom] = useState(groundHeight);
+  const [isJumping, setIsJumping] = useState(false);
   const [isWalking, setIsWalking] = useState(false);
   const [canJump, setCanJump] = useState(true);
   const [touchSpace, setTouchSpace] = useState(false);
@@ -154,7 +161,7 @@ const GameEngine = ({
     }
 
     if (onMove) {
-      onMove({ direction: "right", position: positionInTheGrid });
+      onMove({ direction: "right", position: positionInTheGrid + 1 });
     }
 
     if (heroLeft >= centerPosition) {
@@ -177,7 +184,7 @@ const GameEngine = ({
     }
 
     if (onMove) {
-      onMove({ direction: "left", position: positionInTheGrid });
+      onMove({ direction: "left", position: positionInTheGrid - 1 });
     }
 
     if (heroLeft > centerPosition || heroLeft < centerPosition) {
@@ -198,9 +205,9 @@ const GameEngine = ({
    */
   const onJumping = () => {
     if (canJump && isActive) {
-      setHeroBottom(groundHeight + jumpHeight);
+      setIsJumping(true);
       setCanJump(false);
-      setTimeout(() => setHeroBottom(groundHeight), 200);
+      setTimeout(() => setIsJumping(false), 200);
       setTimeout(() => setCanJump(true), 400);
 
       if (onJump && isActive) {
@@ -246,7 +253,7 @@ const GameEngine = ({
       clearTimeout(loaderTimeout);
     }
 
-    setLoaderTimeout(setTimeout(() => setIsLoading(false), 1500));
+    setLoaderTimeout(setTimeout(() => setIsLoading(false), 1700));
 
     if (onResize) {
       onResize();
@@ -285,11 +292,6 @@ const GameEngine = ({
     }
   }, [top, touchTop]);
 
-  // On ground height change, recalculate the hero position
-  useEffect(() => {
-    setHeroBottom(groundHeight);
-  }, [groundHeight]);
-
   // Trigger the jump
   useEffect(() => {
     (space || touchSpace) && onJumping();
@@ -297,6 +299,11 @@ const GameEngine = ({
 
   // Recalculate offset when user is resizing the window
   useEffect(handleScreenResize, [width, height]);
+
+  const lineHeight = height / nbLines;
+
+  const getX = (distance: number) => Math.round(distance * elementWidth);
+  const getY = (distance: number) => Math.round(distance * lineHeight);
 
   return (
     <>
@@ -307,7 +314,7 @@ const GameEngine = ({
         thirdPlanLeft: firstPlanLeft * THIRD_PLAN_STEP,
         fourthPlanLeft: firstPlanLeft * FOURTH_PLAN_STEP,
         fithPlanLeft: firstPlanLeft * FITH_PLAN_STEP,
-        heroBottom,
+        isJumping,
         isWalking,
         canJump,
         positionInTheGrid,
@@ -315,12 +322,15 @@ const GameEngine = ({
         space: space || touchSpace,
         bottom: bottom || touchBottom,
         isTouchDevice,
-        Grid,
-        GridElement,
         screenSize,
         centerPosition,
         height,
         width,
+        GameContainer,
+        GameElement,
+        Plan,
+        getX,
+        getY,
       })}
 
       {isLoading && (

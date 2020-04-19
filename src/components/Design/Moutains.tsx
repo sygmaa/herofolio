@@ -15,9 +15,9 @@ export const Mountains = styled.div<MountainProps>`
   bottom: 0;
   right: 0;
   left: 0;
-  transition: all 6s ease;
+  transition: opacity 0.5s ease;
   opacity: ${({ opacity }) => (typeof opacity !== "undefined" ? opacity : 1)};
-
+  pointer-events: none;
   background: ${({
     angle,
     percent,

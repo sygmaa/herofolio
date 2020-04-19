@@ -58,6 +58,7 @@ const walk = keyframes`
 export interface HeroProps {
   isWalking: boolean;
   isJumping: boolean;
+  jumpHeight: number;
 }
 
 export const Hero = styled.div<HeroProps>`
@@ -68,11 +69,21 @@ export const Hero = styled.div<HeroProps>`
   background-repeat: no-repeat;
   transition: all 0.2s linear;
   background: ${hat}, ${head}, ${body};
+  transform-origin: bottom;
 
   @media screen and (max-height: 600px) {
     transform: scale(0.8);
-    transform-origin: bottom;
   }
+
+  ${({ isJumping, jumpHeight }) =>
+    isJumping &&
+    css`
+      transform: translateY(${-jumpHeight}px);
+
+      @media screen and (max-height: 600px) {
+        transform: scale(0.8) translateY(${-jumpHeight}px);
+      }
+    `}
 
   &:before {
     content: " ";

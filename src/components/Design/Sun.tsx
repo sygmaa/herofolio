@@ -5,6 +5,7 @@ const SIZE_SM = "250px";
 
 export interface SunProps {
   color?: string;
+  opacity?: number;
 }
 
 export const Sun = styled.div<SunProps>`
@@ -19,7 +20,9 @@ export const Sun = styled.div<SunProps>`
     rgba(255, 214, 0, 0.4) 50%,
     rgba(255, 214, 0, 0) 50.5%
   );
-  transition: all 2s ease;
+  position: absolute;
+  opacity: ${({ opacity }) => (opacity !== undefined ? opacity : 1)};
+  transition: opacity 0.5s ease;
 
   @media screen and (max-height: 600px) {
     min-width: ${SIZE_SM};
