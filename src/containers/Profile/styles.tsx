@@ -51,3 +51,13 @@ export const CommandsHelper = styled.div`
   display: flex;
   align-items: center;
 `;
+
+export const PreloadingMask = styled.div`
+  background: #daf4ff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 999;
+`;

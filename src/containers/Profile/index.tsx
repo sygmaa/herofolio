@@ -13,7 +13,7 @@ import { Hero } from "../../components/Design/Hero";
 import { Ground } from "../../components/Design/Ground";
 
 import Modal from "../../components/Modal";
-import { ModalRight, CommandsHelper } from "./styles";
+import { ModalRight, CommandsHelper, PreloadingMask } from "./styles";
 import { Sun } from "../../components/Design/Sun";
 import Clouds from "../../components/Design/Clouds";
 import { Mountains } from "../../components/Design/Moutains";
@@ -31,13 +31,13 @@ export const PROFILE_LEFT = 30;
 export const LANDSCAPE_CHANGE = 45;
 export const HEIGHT_OFFSET = {
   SMALL: {
-    HOUSE_HEIGHT: 7,
+    HOUSE_HEIGHT: 5,
     SUN_BOTTOM: 2,
     SUN_LEFT: 1,
     PROFILE_BOTTOM: 3,
   },
   LARGE: {
-    HOUSE_HEIGHT: 6,
+    HOUSE_HEIGHT: 5,
     SUN_BOTTOM: 3,
     SUN_LEFT: 4,
     PROFILE_BOTTOM: 5,
@@ -99,7 +99,7 @@ const Profile = () => {
     if (p === PROFILE_LEFT) {
       setTimeout(() => {
         openModal();
-      }, 300);
+      }, 500);
     }
   };
 
@@ -140,6 +140,8 @@ const Profile = () => {
 
   return (
     <>
+      {preloading && <PreloadingMask />}
+
       <GameEngine
         isActive={isActive}
         initPosition={initPosition}
@@ -171,6 +173,7 @@ const Profile = () => {
           GameContainer,
           GameElement,
           Plan,
+          isLoading,
         }) => (
           <GameContainer
             width={width}
@@ -193,6 +196,7 @@ const Profile = () => {
                 isWalking={isWalking && canJump}
                 jumpHeight={getY(JUMP)}
                 isJumping={isJumping}
+                show={!isLoading}
               />
             </GameElement>
 
@@ -238,7 +242,7 @@ const Profile = () => {
               >
                 <Case
                   isJumping={isJumping && positionInTheGrid === PROFILE_LEFT}
-                  jumpHeight={getY(JUMP)}
+                  jumpHeight={getY(1)}
                   onClick={openModal}
                 >
                   Profile
@@ -423,32 +427,33 @@ const Profile = () => {
         )}
       </GameEngine>
 
-      {showPopin && (
-        <Modal>
-          {({ CloseButton, Container }) => (
-            <>
-              <CloseButton onClick={closeModal} size={4} />
-              <Container>
-                <ModalRight>
-                  <h2>
-                    I'm <strong>Kévin Dumont</strong>, a web artisan
-                  </h2>
-                  <p>
-                    I'm creative. I create websites in their entirety. Design,
-                    development, deployment. So, we can say I'm a full stack
-                    developer. I love challenges. I'm a real passionate. I'm
-                    100% self-taught, I'm interested by the back-end web
-                    development since I was 14. Today, I prefer the front-end
-                    development because it's more sophisticated. I am still
-                    learning new technologies to stay up to date and improve my
-                    knowledge.
-                  </p>
-                </ModalRight>
-              </Container>
-            </>
-          )}
-        </Modal>
-      )}
+      <Modal show={showPopin} onEscapePress={() => setShowPopin(false)}>
+        {({ CloseButton, Container }) => (
+          <>
+            <CloseButton
+              onClick={closeModal}
+              size={4}
+              ariaLabel="CLose profile modal"
+            />
+            <Container>
+              <ModalRight>
+                <h2>
+                  I'm <strong>Kévin Dumont</strong>, a web artisan
+                </h2>
+                <p>
+                  I'm creative. I create websites in their entirety. Design,
+                  development, deployment. So, we can say I'm a full stack
+                  developer. I love challenges. I'm a real passionate. I'm 100%
+                  self-taught, I'm interested by the back-end web development
+                  since I was 14. Today, I prefer the front-end development
+                  because it's more sophisticated. I am still learning new
+                  technologies to stay up to date and improve my knowledge.
+                </p>
+              </ModalRight>
+            </Container>
+          </>
+        )}
+      </Modal>
     </>
   );
 };

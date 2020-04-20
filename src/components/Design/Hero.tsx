@@ -59,7 +59,26 @@ export interface HeroProps {
   isWalking: boolean;
   isJumping: boolean;
   jumpHeight: number;
+  show: boolean;
 }
+
+const appearHero = keyframes`
+  0% {
+    transform: translateY(-100vh);
+  }
+  100% {
+    transform: translateY(0);
+  }
+`;
+
+const appearHeroMobile = keyframes`
+  0% {
+    transform: scale(0.8) translateY(-100vh);
+  }
+  100% {
+    transform: scale(0.8) translateY(0);
+  }
+`;
 
 export const Hero = styled.div<HeroProps>`
   width: 100px;
@@ -67,13 +86,24 @@ export const Hero = styled.div<HeroProps>`
   position: absolute;
   bottom: 0;
   background-repeat: no-repeat;
-  transition: all 0.2s linear;
   background: ${hat}, ${head}, ${body};
   transform-origin: bottom;
+  transition: all 0.25s ease-in-out;
+  transform: translateY(0);
 
   @media screen and (max-height: 600px) {
-    transform: scale(0.8);
+    transform: scale(0.8) translateY(0);
   }
+
+  ${({ show }) =>
+    show &&
+    css`
+      animation: ${appearHero} 0.8s ease;
+
+      @media screen and (max-height: 600px) {
+        animation: ${appearHeroMobile} 0.8s ease;
+      }
+    `}
 
   ${({ isJumping, jumpHeight }) =>
     isJumping &&

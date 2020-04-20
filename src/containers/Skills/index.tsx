@@ -78,6 +78,7 @@ const Skills = () => {
             width={getX(1)}
           >
             <Hero
+              show={true}
               isWalking={isWalking && canJump}
               jumpHeight={getY(JUMP)}
               isJumping={isJumping}

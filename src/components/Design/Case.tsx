@@ -22,7 +22,8 @@ export const CaseSquare = styled(BrickBg)`
 
 const Position = styled.div<PositionProps>`
   text-align: center;
-  transition: bottom 0.3s ease;
+  transition: transform 0.2s ease;
+  transition-delay: 0.15s;
   cursor: pointer;
 
   ${({ isJumping, jumpHeight }) =>

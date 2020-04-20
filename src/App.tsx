@@ -13,10 +13,6 @@ import GameContext, {
 } from "./contexts/GameContext";
 import { COINS } from "./constants";
 
-interface AppProps {
-  width: number;
-}
-
 const App = () => {
   const [coins, setCoins] = useState(COINS);
   const [heroPositions, setHeroPositions] = useState(initContext.heroPositions);

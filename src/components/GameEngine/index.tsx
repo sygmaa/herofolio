@@ -25,6 +25,7 @@ export interface ChildrenParams {
   fithPlanLeft: number;
   isJumping: boolean;
   isWalking: boolean;
+  isLoading: boolean;
   canJump: boolean;
   positionInTheGrid: number;
   top: boolean;
@@ -207,7 +208,7 @@ const GameEngine = ({
     if (canJump && isActive) {
       setIsJumping(true);
       setCanJump(false);
-      setTimeout(() => setIsJumping(false), 200);
+      setTimeout(() => setIsJumping(false), 300);
       setTimeout(() => setCanJump(true), 400);
 
       if (onJump && isActive) {
@@ -307,6 +308,16 @@ const GameEngine = ({
 
   return (
     <>
+      <Modal disableStartAnimation={true} show={isLoading}>
+        {({ Container }) => (
+          <Container>
+            <Flex direction="column" align="center" justify="center">
+              <Loader />
+            </Flex>
+          </Container>
+        )}
+      </Modal>
+
       {children({
         heroLeft,
         firstPlanLeft,
@@ -316,6 +327,7 @@ const GameEngine = ({
         fithPlanLeft: firstPlanLeft * FITH_PLAN_STEP,
         isJumping,
         isWalking,
+        isLoading,
         canJump,
         positionInTheGrid,
         top: top || touchTop,
@@ -333,32 +345,21 @@ const GameEngine = ({
         getY,
       })}
 
-      {isLoading && (
-        <Modal>
-          {({ Container }) => (
-            <Container>
-              <Flex direction="column" align="center" justify="center">
-                <Loader />
-              </Flex>
-            </Container>
-          )}
-        </Modal>
-      )}
-
-      {isTouchDevice && width < height && (
-        <Modal>
-          {({ Container }) => (
-            <Container>
-              <Flex direction="column" align="center" justify="center">
-                <PhoneRotate aria-label="phone" />
-                <PhoneRotateText>
-                  For better experience, please rotate your phone.
-                </PhoneRotateText>
-              </Flex>
-            </Container>
-          )}
-        </Modal>
-      )}
+      <Modal
+        disableStartAnimation={true}
+        show={isTouchDevice && width < height}
+      >
+        {({ Container }) => (
+          <Container>
+            <Flex direction="column" align="center" justify="center">
+              <PhoneRotate aria-label="phone" />
+              <PhoneRotateText>
+                For better experience, please rotate your phone.
+              </PhoneRotateText>
+            </Flex>
+          </Container>
+        )}
+      </Modal>
 
       {isTouchDevice && (
         <Commands

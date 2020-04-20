@@ -1,8 +1,33 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 
-import { Close } from "../Design/Icons/Close";
+interface ModalBg {
+  disappear: boolean;
+  animationDisabled?: boolean;
+}
 
-export const ModalBg = styled.div`
+const modalAnimation = keyframes`
+  0% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+const modalAnimationDisappear = keyframes`
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+`;
+
+export const ModalBg = styled.div<ModalBg>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,6 +40,18 @@ export const ModalBg = styled.div`
   right: 0;
   color: #044e6d;
   background: #daf4ff;
+
+  ${({ animationDisabled }) =>
+    !animationDisabled &&
+    css`
+      animation: ${modalAnimation} 0.5s ease;
+    `}
+
+  ${({ disappear }) =>
+    disappear === true &&
+    css`
+      animation: ${modalAnimationDisappear} 0.5s ease;
+    `}
 `;
 
 export const Container = styled.div`
@@ -22,11 +59,4 @@ export const Container = styled.div`
   max-width: 100%;
   padding: 15px;
   box-sizing: border-box;
-`;
-
-export const CloseUi = styled(Close)`
-  position: fixed;
-  top: 20px;
-  right: 10px;
-  cursor: pointer;
 `;

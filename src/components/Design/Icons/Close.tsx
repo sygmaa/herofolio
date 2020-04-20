@@ -45,12 +45,12 @@ const CloseIcon = styled.i<CloseIconWithColorsProps>`
   }
 `;
 
-interface Close {
+export interface CloseProps {
   color?: string;
   [key: string]: any;
 }
 
-export const Close = ({ color, size, ...props }: Close) => {
+export const Close = ({ color, size, ...props }: CloseProps) => {
   return (
     <CloseInconContainer {...props} size={size}>
       <CloseIcon color={color} size={size} />
