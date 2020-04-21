@@ -427,7 +427,7 @@ const Profile = () => {
         )}
       </GameEngine>
 
-      <Modal show={showPopin} onEscapePress={() => setShowPopin(false)}>
+      <Modal show={showPopin} onEscapePress={closeModal}>
         {({ CloseButton, Container }) => (
           <>
             <CloseButton
